@@ -1,7 +1,7 @@
 <?php
 require 'vendor/autoload.php';
 Flight::route('/',function(){
-    echo 'Hello world Azra';
+    echo 'Hello world Azra!';
 });
 
 ?>
