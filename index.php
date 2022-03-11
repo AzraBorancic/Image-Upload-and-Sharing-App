@@ -4,4 +4,5 @@ Flight::route('/',function(){
     echo 'Hello world Azra!';
 });
 
+Flight::start();
 ?>
