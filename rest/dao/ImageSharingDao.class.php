@@ -5,7 +5,7 @@ class ImageSharingDao{
     private $conn;
 
     public function __construct(){
-        $servername = "localhost";
+        $servername = "127.0.0.1";
         $username = "root";
         $password = "root123";
         $schema = "image_sharing";

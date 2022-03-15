@@ -10,11 +10,11 @@ Flight::route('/',function(){
     echo 'Welcome to the web page for Image sharing and uploading app!';
 });
 
-require_once("rest/dao/ImageSharingDao.class.php");
+//require_once("rest/dao/ImageSharingDao.class.php");
 
-$dao = new ImageSharingDao();
-$results = $dao->get_all();
-print_r($results);
+// $dao = new ImageSharingDao();
+// $results = $dao->get_all();
+// print_r($results);
 
 Flight::start();
 
