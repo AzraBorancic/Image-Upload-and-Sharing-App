@@ -22,18 +22,19 @@ class ImageSharingDao{
     }
 
     public function add($username, $password, $created_at){
-        $stmt = $this->conn->prepare("INSERT INTO users (username, password, created_at) VALUES('$username', '$password', '$created_at')");
-        $stmt->execute();
+        $stmt = $this->conn->prepare("INSERT INTO users (username, password, created_at) VALUES(:username, :password, :created_at)");
+        $stmt->execute(['username' => $username, 'password' => $password, 'created_at' => $created_at]);
     }
 
     public function delete($id){
-        $stmt = $this->conn->prepare("DELETE FROM users WHERE id = $id");
+        $stmt = $this->conn->prepare("DELETE FROM users WHERE id = :id");
+        $stmt->bindParam(':id', $id);
         $stmt->execute(); 
     }
 
     public function update($id, $username, $password, $created_at){
-        $stmt = $this->conn->prepare("UPDATE users SET username = '$username', password = '$password', created_at = '$created_at' WHERE id = $id");
-        $stmt->execute();
+        $stmt = $this->conn->prepare("UPDATE users SET username = :username, password = :password, created_at = :created_at WHERE id = :id");
+        $stmt->execute(['id' => $id,'username' => $username, 'password' => $password, 'created_at' => $created_at]);
     }
 }
 
