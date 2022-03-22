@@ -38,7 +38,8 @@ Flight::route('POST /users',function(){
  */
 Flight::route('PUT /users/@id',function($id){
     $data = Flight::request()->data->getData();
-    Flight::json($data);
+    $data['id'] = $id;
+    Flight::json(Flight::imageSharingDao()->update($data));
 });
 
 /**
@@ -48,8 +49,6 @@ Flight::route('DELETE /users/@id',function($id){
     $user = Flight::imageSharingDao()->delete($id);
     Flight::json(["message" => "Deleted."]);
 });
-
-
 
 Flight::start();
 

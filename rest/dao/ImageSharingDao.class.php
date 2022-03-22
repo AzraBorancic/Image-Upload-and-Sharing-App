@@ -31,8 +31,8 @@ class ImageSharingDao{
     public function add($user){
         $stmt = $this->conn->prepare("INSERT INTO users (username, password, created_at) VALUES(:username, :password, :created_at)");
         $stmt->execute($user);
-        $user['id'] = $this->conn->lastInsertId();
-        return $user;
+        $users['id'] = $this->conn->lastInsertId();
+        return $user; 
     }
 
     public function delete($id){
@@ -41,9 +41,10 @@ class ImageSharingDao{
         $stmt->execute(); 
     }
 
-    public function update($id, $username, $password, $created_at){
+    public function update($user){
         $stmt = $this->conn->prepare("UPDATE users SET username = :username, password = :password, created_at = :created_at WHERE id = :id");
-        $stmt->execute(['id' => $id,'username' => $username, 'password' => $password, 'created_at' => $created_at]);
+        $stmt->execute($user);
+        return $user;
     }
 }
 
