@@ -24,6 +24,7 @@ Flight::route('GET /users',function(){
  */
 Flight::route('GET /users/@id',function($id){
     Flight::json(Flight::imageSharingDao()->get_by_id($id));
+    
 });
 
 /**
