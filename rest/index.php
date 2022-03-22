@@ -19,6 +19,12 @@ Flight::route('GET /users',function(){
 /**
  * List individual user
  */
+Flight::route('GET /users/@id',function($id){
+    $dao = new ImageSharingDao();
+    $user = $dao->get_by_id($id);
+    Flight::json($user);
+});
+
 
 /**
  * Add user
