@@ -21,6 +21,13 @@ class ImageSharingDao{
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function get_by_id($id){
+        $stmt = $this->conn->prepare("SELECT * FROM users WHERE id = :id");
+        $stmt->execute(['id' => $id]);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return reset($result);
+    }
+
     public function add($username, $password, $created_at){
         $stmt = $this->conn->prepare("INSERT INTO users (username, password, created_at) VALUES(:username, :password, :created_at)");
         $stmt->execute(['username' => $username, 'password' => $password, 'created_at' => $created_at]);
