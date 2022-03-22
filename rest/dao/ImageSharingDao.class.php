@@ -28,9 +28,11 @@ class ImageSharingDao{
         return reset($result);
     }
 
-    public function add($username, $password, $created_at){
+    public function add($user){
         $stmt = $this->conn->prepare("INSERT INTO users (username, password, created_at) VALUES(:username, :password, :created_at)");
-        $stmt->execute(['username' => $username, 'password' => $password, 'created_at' => $created_at]);
+        $stmt->execute($user);
+        $user['id'] = $this->conn->lastInsertId();
+        return $user;
     }
 
     public function delete($id){
