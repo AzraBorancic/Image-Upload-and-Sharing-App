@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '4f3c6b4e6787fc213c8826b240b4a562b97bdaca',
+        'reference' => '900571c9fb76c7102a316bee92b2189880332643',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '4f3c6b4e6787fc213c8826b240b4a562b97bdaca',
+            'reference' => '900571c9fb76c7102a316bee92b2189880332643',
             'dev_requirement' => false,
         ),
         'mikecao/flight' => array(
