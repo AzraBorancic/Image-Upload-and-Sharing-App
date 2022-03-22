@@ -9,6 +9,9 @@ require_once '../vendor/autoload.php';
 
 Flight::register('imageSharingDao', 'ImageSharingDao');
 
+Flight::route('/', function(){
+    echo 'hello world!';
+});
 /**
  * List all users
  */
@@ -41,6 +44,8 @@ Flight::route('DELETE /users/@id',function($id){
     $user = Flight::imageSharingDao()->delete($id);
     Flight::json(["message" => "Deleted."]);
 });
+
+
 
 Flight::start();
 
