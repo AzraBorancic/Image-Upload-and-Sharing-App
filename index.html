@@ -8,7 +8,7 @@
 </head>
 
 <body>
-  
+  <!-- Navbar links -->
   <header>
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
       <div class="container-fluid">
@@ -38,17 +38,12 @@
   </header>
 
   <main>
+    <!-- Main page content -->
     <section class="py-5 text-center container">
       <div class="row py-lg-5">
         <div class="col-lg-6 col-md-8 mx-auto">
           <h1 class="fw-light">Album example</h1>
           <p class="lead text-muted">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don’t simply skip over it entirely.</p>
-          <p>
-            <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-              Launch demo modal
-            </button>
-          </p>
         </div>
       </div>
     </section>
@@ -72,19 +67,36 @@
 <script src="js/bootstrap.bundle.min.js"></script>
 
 <script>
-  $.get("rest/users",function(data){
+  getUsernames();
+  // Show each username in separate div
+  function getUsernames(){
+    $.get("rest/users", function(data) {
     $("#usernames").html("");
     var html = "";
     for(let i = 0; i < data.length; i++){
       html += `
-      <div class="col">
-        <div></div>
-        <div></div>
-        <p>`+ data[i].username+`</p>
+      <div class="col-lg-4">
+        <p>` + data[i].username + `</p>
+        <p>
+          <button type="button" class="btn btn-primary todo-button" onclick="showModal(` + data[i].id + `)" >
+            Launch demo modal
+          </button>
+        </p>
       </div>`;
     }
     $("#usernames").html(html);
+    console.log(data);
   });
+  }
+  // Show user id when opening modal
+  function showModal(id){
+    $.get('rest/users/' + id, function(data){
+      console.log(data);
+      //$("#exampleModal .modal-body").html(id);
+      $("#sample-text").val("User created at " + data.created_at);
+      $("#exampleModal").modal("show");
+    });
+  }
 </script>
 
 <!-- Modal -->
@@ -96,7 +108,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        ...
+        <input id="sample-text" type="text"/>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
