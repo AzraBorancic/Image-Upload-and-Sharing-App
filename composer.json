@@ -1,5 +1,7 @@
 {
     "require": {
-        "mikecao/flight": "^2.0"
+        "mikecao/flight": "^2.0",
+        "aws/aws-sdk-php": "^3.219",
+        "vlucas/phpdotenv": "^5.4"
     }
 }
