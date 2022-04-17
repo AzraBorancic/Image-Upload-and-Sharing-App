@@ -10,8 +10,10 @@ require_once '../vendor/autoload.php';
 use Dotenv\Dotenv;
 use Aws\S3\S3Client;
 
-$dotenv = Dotenv::createImmutable(__DIR__);
-$dotenv->load();
+if (in_array($_SERVER['REMOTE_ADDR'], array('127.0.0.1', '::1'))) {
+    $dotenv = Dotenv::createImmutable(__DIR__);
+    $dotenv->load();
+}
 
 
 Flight::register('imageSharingDao', 'ImageSharingDao');
