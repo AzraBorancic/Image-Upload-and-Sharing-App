@@ -73,8 +73,6 @@ Flight::route('POST /images', function () {
 
     foreach ($files as $file) {
         try {
-
-
             $name = time() . $file['name'];
             $result = $s3Client->putObject([
             'Bucket' => $_ENV['AWS_BUCKET'],
