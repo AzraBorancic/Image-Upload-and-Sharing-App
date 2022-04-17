@@ -4,8 +4,8 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-require_once 'dao\ImageSharingDao.class.php';
-require_once '..\vendor\autoload.php';
+require_once './dao/ImageSharingDao.class.php';
+require_once '../vendor/autoload.php';
 
 use Dotenv\Dotenv;
 use Aws\S3\S3Client;
