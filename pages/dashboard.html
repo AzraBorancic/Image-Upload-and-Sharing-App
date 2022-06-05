@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <div class="container-fluid">
+    <form enctype="multipart/form-data">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <br />
+              <div class="preview-zone hidden mb-4">
+                <div class="box box-solid">
+                  <div class="box-header with-border">
+                    <div class="position-absolute top-0 start-0"><b>Image Preview</b></div>
+                    <div class="box-tools pull-right">
+                      <button type="button" class="btn btn-primary btn-sm remove-preview">
+                        <i class="fa fa-times"></i> Reset The Field
+                      </button>
+                    </div>
+                  </div>
+                  <div class="box-body"></div>
+                </div>
+              </div>
+              <div class="dropzone-wrapper">
+                <div class="dropzone-desc">
+                  <i class="glyphicon glyphicon-download-alt"></i>
+                  <p>Choose an image file or drag it here.</p>
+                </div>
+                <input type="file" name="img_logo" class="dropzone" multiple>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <button id="upload-button" type="button" class="btn btn-primary btn-sm pull-right">Upload</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <script src="js/image-upload.js"></script>
+</body>
+</html>
