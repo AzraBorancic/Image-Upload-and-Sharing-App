@@ -8,7 +8,6 @@ require_once './dao/ImageSharingDao.class.php';
 require_once '../vendor/autoload.php';
 
 use Dotenv\Dotenv;
-use Aws\S3\S3Client;
 
 if (in_array($_SERVER['REMOTE_ADDR'], array('127.0.0.1', '::1'))) {
     $dotenv = Dotenv::createImmutable(__DIR__);
@@ -42,33 +41,6 @@ Flight::route('PUT /users/@id', function ($id) {
 Flight::route('DELETE /users/@id', function ($id) {
     $user = Flight::imageSharingDao()->delete($id);
     Flight::json(["message" => "User has been successfully deleted."]);
-});
-
-Flight::route('POST /images', function () {
-    $credentials = new Aws\Credentials\Credentials($_ENV['AWS_ACCESS_KEY_ID'], $_ENV['AWS_SECRET_ACCESS_KEY']);
-    $s3Client = new S3Client([
-        'version' => 'latest',
-        'region'  => $_ENV['AWS_DEFAULT_REGION'],
-        'credentials' => $credentials
-    ]);
-
-    $files = Flight::request()->files;
-
-    foreach ($files as $file) {
-        try {
-            $name = time() . $file['name'];
-            $result = $s3Client->putObject([
-            'Bucket' => $_ENV['AWS_BUCKET'],
-            'Key'    => $name,
-            'Body'   => fopen($file['tmp_name'], 'r'),
-            'ACL'    => 'public-read', // make file 'public'
-            ]);
-            echo "Image uploaded successfully. Image path is: ". $result->get('ObjectURL');
-        } catch (Aws\S3\Exception\S3Exception $e) {
-            echo "There was an error uploading the file.\n";
-            echo $e->getMessage();
-        }
-    }
 });
 
 Flight::start();
