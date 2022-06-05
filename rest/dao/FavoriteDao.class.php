@@ -10,12 +10,12 @@ class FavoriteDao extends BaseDao
      */
     public function __construct()
     {
-        parent::__construct("favorites");
+        parent::__construct("favorite_images");
     }
 
-    public function get_images($user_id, $search = NULL)
+    public function get_favorite_images($user_id, $search = NULL)
     {
-        $query = "(SELECT * FROM favorites WHERE user_id = :user_id";
+        $query = "SELECT i.* FROM users u JOIN favorite_images fi ON u.id = fi.user_id AND u.id = :user_id JOIN images i ON fi.image_id = i.id";
         return $this->query($query, ['user_id' => $user_id]);
     }
 
