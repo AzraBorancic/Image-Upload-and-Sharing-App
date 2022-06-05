@@ -2,6 +2,8 @@
     "require": {
         "mikecao/flight": "^2.0",
         "aws/aws-sdk-php": "^3.219",
-        "vlucas/phpdotenv": "^5.4"
+        "vlucas/phpdotenv": "^5.4",
+        "firebase/php-jwt": "^6.2",
+        "zircote/swagger-php": "^3.0"
     }
 }

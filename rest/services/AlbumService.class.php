@@ -4,7 +4,7 @@ require_once __DIR__ . '/../dao/AlbumDao.class.php';
 require_once __DIR__ . '/../dao/AlbumImageDao.class.php';
 require_once __DIR__ . '/../dao/UserDao.class.php';
 
-class NoteService extends BaseService
+class AlbumService extends BaseService
 {
 
     private $user_dao;

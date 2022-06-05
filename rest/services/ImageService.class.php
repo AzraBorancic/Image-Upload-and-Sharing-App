@@ -5,7 +5,7 @@ require_once __DIR__ . '/../dao/UserDao.class.php';
 
 use Aws\S3\S3Client;
 
-class NoteService extends BaseService
+class ImageService extends BaseService
 {
 
     private $user_dao;
