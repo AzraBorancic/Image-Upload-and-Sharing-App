@@ -20,10 +20,14 @@ Flight::register('imageService', 'ImageService');
 Flight::register('albumService', 'AlbumService');
 Flight::register('favoriteImageService', 'FavoriteImageService');
 
-// Flight::map('error', function(Exception $ex){
-//     // Handle error
-//     Flight::json(['message' => $ex->getMessage()], 500);
-// });
+Flight::map('error', function(Exception $ex){
+    // Handle error
+    if ($ex instanceof Exception) {
+      Flight::json(['message' => $ex->getMessage()], 500);
+    } else {
+      Flight::json(['message' => $ex], 500);
+    }
+});
 
 /* utility function for reading query parameters from URL */
 Flight::map('query', function($name, $default_value = NULL){
