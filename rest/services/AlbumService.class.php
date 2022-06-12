@@ -22,6 +22,11 @@ class AlbumService extends BaseService
         return $this->dao->get_albums($user['id'], $search);
     }
 
+    public function get_album_images($album_id)
+    {
+        return $this->album_image_dao->get_by_id($album_id);
+    }
+
     public function get_by_id($user, $id)
     {
         $album_images = $this->album_image_dao->get_by_id($id);
@@ -33,6 +38,15 @@ class AlbumService extends BaseService
 
         $entity['user_id'] = $user['id'];
         return parent::add($user, $entity);
+    }
+
+    public function add_image_to_album($user, $entity) {
+        $entity['user_id'] = $user['id'];
+        return $this->album_image_dao->add($user, $entity);
+    }
+
+    public function remove_image_from_album($id) {
+        return $this->album_image_dao->delete($id);
     }
 
     public function update($user, $id, $entity)

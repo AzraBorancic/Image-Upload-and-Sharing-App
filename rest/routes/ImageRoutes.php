@@ -23,6 +23,16 @@ Flight::route('GET /images/@id', function ($id) {
 });
 
 /**
+ * @OA\Get(path="/images/{id}/favorites", tags={"images"}, security={{"ApiKeyAuth": {}}},
+ *     @OA\Parameter(in="path", name="id", example=1, description="Id of image"),
+ *     @OA\Response(response="200", description="Get favorite user images")
+ * )
+ */
+Flight::route('GET /images/@id/favorite', function ($id) {
+    Flight::json(Flight::favoriteImageService()->get_favorite_images(Flight::get('user')));
+});
+
+/**
  * @OA\Post(
  *     path="/images", security={{"ApiKeyAuth": {}}},
  *     description="Add user image",
@@ -53,6 +63,26 @@ Flight::route('POST /images', function () {
 });
 
 /**
+ * @OA\Post(
+ *     path="/images/{id}/favorite", security={{"ApiKeyAuth": {}}},
+ *     description="Add image to favorites",
+ *     tags={"images"},
+ *     @OA\Parameter(in="path", name="id", example=1, description="Id of image"),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Image that has been created"
+ *     ),
+ *     @OA\Response(
+ *         response=500,
+ *         description="Error"
+ *     )
+ * )
+ */
+Flight::route('POST /images/@id/favorites', function ($id) {
+    Flight::json(Flight::favoriteImageService()->add(Flight::get('user'), ['image_id' => $id]));
+});
+
+/**
  * @OA\Delete(
  *     path="/images/{id}", security={{"ApiKeyAuth": {}}},
  *     description="Delete user image",
@@ -71,4 +101,25 @@ Flight::route('POST /images', function () {
 Flight::route('DELETE /images/@id', function ($id) {
     Flight::imageService()->delete(Flight::get('user'), $id);
     Flight::json(["message" => "Image has successfully been deleted!"]);
+});
+
+/**
+ * @OA\Delete(
+ *     path="/images/{id}/favorite", security={{"ApiKeyAuth": {}}},
+ *     description="Delete user image from favorites",
+ *     tags={"images"},
+ *     @OA\Parameter(in="path", name="id", example=1, description="Image ID"),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Image deleted"
+ *     ),
+ *     @OA\Response(
+ *         response=500,
+ *         description="Error"
+ *     )
+ * )
+ */
+Flight::route('DELETE /images/@id/favorites', function ($id) {
+    Flight::favoriteImageService()->delete(Flight::get('user'), $id);
+    Flight::json(["message" => "Image has been removed from favorites!"]);
 });
