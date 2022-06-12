@@ -1,13 +1,23 @@
 <?php
 
 /**
+ * @OA\Get(path="/images/all", tags={"images"}, security={{"ApiKeyAuth": {}}},
+ *         summary="Return all images from the API. ",
+ *         @OA\Response( response=200, description="List of images.")
+ * )
+ */
+Flight::route('GET /images/all', function () {
+    Flight::json(Flight::imageService()->get_all_images());
+});
+
+
+/**
  * @OA\Get(path="/images", tags={"images"}, security={{"ApiKeyAuth": {}}},
  *         summary="Return all user images from the API. ",
  *         @OA\Response( response=200, description="List of images.")
  * )
  */
 Flight::route('GET /images', function () {
-    // who is the user who calls this method?
     $user = Flight::get('user');
     Flight::json(Flight::imageService()->get_images($user));
 });

@@ -13,6 +13,11 @@ class ImageDao extends BaseDao
         parent::__construct("images");
     }
 
+    public function get_all_images() {
+        $query = "SELECT * FROM images";
+        return $this->query($query, []);
+    }
+
     public function get_images($user_id, $search = NULL)
     {
         $query = "SELECT * FROM images WHERE user_id = :user_id";

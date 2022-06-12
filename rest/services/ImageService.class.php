@@ -16,6 +16,11 @@ class ImageService extends BaseService
         $this->user_dao = new UserDao();
     }
 
+    public function get_all_images()
+    {
+        return $this->dao->get_all_images();
+    }
+
     public function get_images($user, $search = NULL)
     {
         return $this->dao->get_images($user['id'], $search);
