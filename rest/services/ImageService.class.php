@@ -42,6 +42,7 @@ class ImageService extends BaseService
         ]);
 
         $files = $entities;
+        $entity = [];
 
         foreach ($files as $file) {
             try {
@@ -54,9 +55,9 @@ class ImageService extends BaseService
                 ]);
                 echo "Image uploaded successfully. Image path is: " . $result->get('ObjectURL');
 
-                $file['user_id'] = $user['id'];
-                $file['s3_url'] =  $result->get('ObjectURL');
-                parent::add($user, $file);
+                $entity['user_id'] = $user['id'];
+                $entity['s3_url'] =  $result->get('ObjectURL');
+                parent::add($user, $entity);
             } catch (Aws\S3\Exception\S3Exception $e) {
                 echo "There was an error uploading the file.\n";
                 echo $e->getMessage();

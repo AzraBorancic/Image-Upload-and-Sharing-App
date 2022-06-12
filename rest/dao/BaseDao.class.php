@@ -8,8 +8,8 @@ class BaseDao{
     public function __construct($table_name){
         $this->table_name = $table_name;
         $servername = $_ENV['DB_HOST'];
-        $username = $_ENV['DB_USERNAME'];
-        $password = $_ENV['DB_PASSWORD'];
+        $username = $_ENV['DB_USER'];
+        $password = $_ENV['DB_PASS'];
         $schema = $_ENV['DB_NAME'];
 
         $this->conn = new PDO("mysql:host=$servername;dbname=$schema", $username, $password);
@@ -51,7 +51,7 @@ class BaseDao{
           case 'users':
             $favorite_query = 'INSERT INTO favorites(user_id) VALUES(:id)';
             $stmt= $this->conn->prepare($favorite_query);
-            $stmt->execute($entity);
+            $stmt->execute(['id' => $entity['id']]);
             break;
           default:
             break;

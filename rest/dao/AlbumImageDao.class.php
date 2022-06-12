@@ -11,8 +11,8 @@ class AlbumImageDao extends BaseDao{
   }
 
   public function get_by_id($id){
-    $query = "(SELECT i.* FROM album_images al JOIN images i ON al.image_id = i.id AND al.album_id = :id";
-    return $this->query_unique($query, ['id' => $id]);
+    $query = "SELECT i.* FROM album_images al JOIN images i ON al.image_id = i.id AND al.album_id = :id";
+    return $this->query($query, ['id' => $id]);
   }
 }
 

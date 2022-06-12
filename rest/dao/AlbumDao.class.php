@@ -11,7 +11,7 @@ class AlbumDao extends BaseDao{
   }
 
   public function get_albums($user_id, $search = NULL){
-    $query = "(SELECT * FROM albums WHERE user_id = :user_id";
+    $query = "SELECT * FROM albums WHERE user_id = :user_id";
 
     if (isset($search)){
         $query .= " AND name LIKE '%".$search."%'";

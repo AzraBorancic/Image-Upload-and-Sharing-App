@@ -41,8 +41,7 @@ class AlbumService extends BaseService
     }
 
     public function add_image_to_album($user, $entity) {
-        $entity['user_id'] = $user['id'];
-        return $this->album_image_dao->add($user, $entity);
+        return $this->album_image_dao->add($entity);
     }
 
     public function remove_image_from_album($id) {

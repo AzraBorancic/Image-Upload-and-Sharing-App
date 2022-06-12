@@ -26,17 +26,17 @@ Flight::register('imageService', 'ImageService');
 Flight::register('albumService', 'AlbumService');
 Flight::register('favoriteImageService', 'FavoriteImageService');
 
-Flight::map('error', function(Exception $ex){
-    // Handle error
-    if ($ex instanceof Exception) {
-      Flight::json(['message' => $ex->getMessage()], 500);
-    } else {
-      Flight::json(['message' => $ex], 500);
-    }
-});
+// Flight::map('error', function($ex){
+//     // Handle error
+//     if ($ex instanceof Exception) {
+//       Flight::json(['message' => $ex->getMessage()], 500);
+//     } else {
+//       Flight::json(['message' => var_dump($ex)], 500);
+//     }
+// });
 
 /* utility function for reading query parameters from URL */
-Flight::map('query', function($name, $default_value = NULL){
+Flight::map('query', function($name, $default_value = ''){
   $request = Flight::request();
   $query_param = @$request->query->getData()[$name];
   $query_param = $query_param ? $query_param : $default_value;
@@ -48,7 +48,7 @@ Flight::route('/*', function(){
   //return TRUE;
   //perform JWT decode
   $path = Flight::request()->url;
-  if ($path == '/login' || $path == '/docs.json') return TRUE; // exclude login route from middleware
+  if ($path == '/login' || $path == '/register' || $path == '/docs.json') return TRUE; // exclude login route from middleware
 
   $headers = getallheaders();
   if (@!$headers['Authorization']){

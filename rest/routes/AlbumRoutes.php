@@ -22,9 +22,35 @@ Flight::route('GET /albums', function () {
  */
 Flight::route('GET /albums/@id', function ($id) {
     Flight::json([
-        'album' => Flight::albumService()->get_by_id(Flight::get('user'), $id),
-        'images' => Flight::albumService()->get_album_images($id)
+        'images' => Flight::albumService()->get_by_id(Flight::get('user'), $id)
     ]);
+});
+
+/**
+ * @OA\Post(
+ *     path="/albums", security={{"ApiKeyAuth": {}}},
+ *     description="Add user album",
+ *     tags={"albums"},
+ *   @OA\RequestBody(description="Album info", required=true,
+ *       @OA\MediaType(mediaType="application/json",
+ *    			@OA\Schema(
+ *                  required={"name"},
+ *    			    @OA\Property(property="name", type="string", example="Album1",	description="Name of the album" )
+ *          )
+ *       )
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Image has been added to album."
+ *     ),
+ *     @OA\Response(
+ *         response=500,
+ *         description="Error"
+ *     )
+ * )
+ */
+Flight::route('POST /albums', function () {
+    Flight::json(Flight::albumService()->add(Flight::get('user'), Flight::request()->data->getData()));
 });
 
 /**
@@ -44,8 +70,11 @@ Flight::route('GET /albums/@id', function ($id) {
  *     )
  * )
  */
-Flight::route('POST /albums/@album_id/images/@image_id', function () {
-    Flight::json(Flight::albumService()->add_image_to_album(Flight::get('user'), Flight::request()->data->getData()));
+Flight::route('POST /albums/@album_id/images/@image_id', function ($album_id, $image_id) {
+    Flight::json(Flight::albumService()->add_image_to_album(Flight::get('user'), [
+        'album_id' => $album_id,
+        'image_id' => $image_id
+    ]));
 });
 
 /**

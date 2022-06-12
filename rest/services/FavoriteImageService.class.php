@@ -14,34 +14,25 @@ class FavoriteImageService extends BaseService
         $this->user_dao = new UserDao();
     }
 
-    public function get_favorite_images($user, $search = NULL)
+    public function get_favorite_images($user)
     {
-        return $this->dao->get_favorite_images($user['id'], $search);
+        return $this->dao->get_favorite_images($user['id']);
     }
 
     public function get_by_id($user, $id)
     {
         $favorite = parent::get_by_id($user, $id);
-        if ($favorite['user_id'] != $user['id']) {
-            throw new Exception("This is hack you will be traced, be prepared :)");
-        }
-
         return $favorite;
     }
 
     public function add($user, $entity)
     {
-
-        $entity['user_id'] = $user['id'];
         return parent::add($user, $entity);
     }
 
     public function update($user, $id, $entity)
     {
         $favorite = $this->dao->get_by_id($id);
-        if ($favorite['user_id'] != $user['id']) {
-            throw new Exception("This is hack you will be traced, be prepared :)");
-        }
         unset($entity['user_id']);
         return parent::update($user, $id, $entity);
     }
@@ -49,9 +40,6 @@ class FavoriteImageService extends BaseService
     public function delete($user, $id)
     {
         $favorite = $this->dao->get_by_id($id);
-        if ($favorite['user_id'] != $user['id']) {
-            throw new Exception("This is hack you will be traced, be prepared :)");
-        }
-        parent::delete($user, $id);
+        parent::delete($user, $favorite['id']);
     }
 }
