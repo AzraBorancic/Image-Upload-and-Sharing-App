@@ -24,10 +24,6 @@ class ImageService extends BaseService
     public function get_by_id($user, $id)
     {
         $image = parent::get_by_id($user, $id);
-        if ($image['user_id'] != $user['id']) {
-            throw new Exception("This is hack you will be traced, be prepared :)");
-        }
-
         return $image;
     }
 
@@ -70,9 +66,6 @@ class ImageService extends BaseService
     public function update($user, $id, $entity)
     {
         $image = $this->dao->get_by_id($id);
-        if ($image['user_id'] != $user['id']) {
-            throw new Exception("This is hack you will be traced, be prepared :)");
-        }
         unset($entity['user_id']);
         return parent::update($user, $id, $entity);
     }
@@ -80,9 +73,6 @@ class ImageService extends BaseService
     public function delete($user, $id)
     {
         $image = $this->dao->get_by_id($id);
-        if ($image['user_id'] != $user['id']) {
-            throw new Exception("This is hack you will be traced, be prepared :)");
-        }
         parent::delete($user, $id);
     }
 }

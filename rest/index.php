@@ -12,6 +12,7 @@ require_once __DIR__.'/services/UserService.class.php';
 require_once __DIR__.'/services/ImageService.class.php';
 require_once __DIR__.'/services/AlbumService.class.php';
 require_once __DIR__.'/services/FavoriteImageService.class.php';
+require_once __DIR__.'/services/UserLikedImageService.class.php';
 
 require_once __DIR__.'/dao/UserDao.class.php';
 
@@ -25,6 +26,7 @@ Flight::register('userService', 'UserService');
 Flight::register('imageService', 'ImageService');
 Flight::register('albumService', 'AlbumService');
 Flight::register('favoriteImageService', 'FavoriteImageService');
+Flight::register('userLikedImageService', 'userLikedImageService');
 
 // Flight::map('error', function($ex){
 //     // Handle error

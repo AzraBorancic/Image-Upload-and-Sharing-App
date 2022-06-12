@@ -53,6 +53,27 @@ Flight::route('POST /images', function () {
 });
 
 /**
+ * @OA\Delete(
+ *     path="/images/{id}", security={{"ApiKeyAuth": {}}},
+ *     description="Delete user image",
+ *     tags={"images"},
+ *     @OA\Parameter(in="path", name="id", example=1, description="Image ID"),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Image deleted"
+ *     ),
+ *     @OA\Response(
+ *         response=500,
+ *         description="Error"
+ *     )
+ * )
+ */
+Flight::route('DELETE /images/@id', function ($id) {
+    Flight::imageService()->delete(Flight::get('user'), $id);
+    Flight::json(["message" => "Image has successfully been deleted!"]);
+});
+
+/**
  * @OA\Get(path="/favorite", tags={"favorites"}, security={{"ApiKeyAuth": {}}},
  *     @OA\Response(response="200", description="Get favorite user images")
  * )
@@ -84,27 +105,6 @@ Flight::route('POST /favorite/@id/@image_id', function ($id, $image_id) {
 
 /**
  * @OA\Delete(
- *     path="/images/{id}", security={{"ApiKeyAuth": {}}},
- *     description="Delete user image",
- *     tags={"images"},
- *     @OA\Parameter(in="path", name="id", example=1, description="Image ID"),
- *     @OA\Response(
- *         response=200,
- *         description="Image deleted"
- *     ),
- *     @OA\Response(
- *         response=500,
- *         description="Error"
- *     )
- * )
- */
-Flight::route('DELETE /images/@id', function ($id) {
-    Flight::imageService()->delete(Flight::get('user'), $id);
-    Flight::json(["message" => "Image has successfully been deleted!"]);
-});
-
-/**
- * @OA\Delete(
  *     path="/favorite/{image_id}", security={{"ApiKeyAuth": {}}},
  *     description="Delete user image from favorites",
  *     tags={"favorites"},
@@ -122,4 +122,45 @@ Flight::route('DELETE /images/@id', function ($id) {
 Flight::route('DELETE /favorite/@image_id', function ($image_id) {
     Flight::favoriteImageService()->delete(Flight::get('user'), $image_id);
     Flight::json(["message" => "Image has been removed from favorites!"]);
+});
+
+/**
+ * @OA\Post(
+ *     path="/like/{image_id}", security={{"ApiKeyAuth": {}}},
+ *     description="Like image",
+ *     tags={"likes"},
+ *     @OA\Parameter(in="path", name="image_id", example=1, description="Id of image"),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Image has been added to favorites."
+ *     ),
+ *     @OA\Response(
+ *         response=500,
+ *         description="Error"
+ *     )
+ * )
+ */
+Flight::route('POST /like/@image_id', function ($image_id) {
+    Flight::json(Flight::userLikedImageService()->add(Flight::get('user'), ['image_id' => $image_id]));
+});
+
+/**
+ * @OA\Delete(
+ *     path="/dislike/{image_id}", security={{"ApiKeyAuth": {}}},
+ *     description="Dislike image",
+ *     tags={"likes"},
+ *     @OA\Parameter(in="path", name="image_id", example=1, description="Image ID"),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Image deleted"
+ *     ),
+ *     @OA\Response(
+ *         response=500,
+ *         description="Error"
+ *     )
+ * )
+ */
+Flight::route('DELETE /dislike/@image_id', function ($image_id) {
+    Flight::userLikedImageService()->delete(Flight::get('user'), $image_id);
+    Flight::json(["message" => "Image disliked!"]);
 });
