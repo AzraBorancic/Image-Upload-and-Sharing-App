@@ -53,7 +53,7 @@ Flight::route('POST /images', function () {
 });
 
 /**
- * @OA\Get(path="/favorite", tags={"images"}, security={{"ApiKeyAuth": {}}},
+ * @OA\Get(path="/favorite", tags={"favorites"}, security={{"ApiKeyAuth": {}}},
  *     @OA\Response(response="200", description="Get favorite user images")
  * )
  */
@@ -65,7 +65,7 @@ Flight::route('GET /favorite', function () {
  * @OA\Post(
  *     path="/favorite/{id}/{image_id}", security={{"ApiKeyAuth": {}}},
  *     description="Add image to favorites",
- *     tags={"images"},
+ *     tags={"favorites"},
  *     @OA\Parameter(in="path", name="id", example=1, description="Id of favorite item"),
  *     @OA\Parameter(in="path", name="image_id", example=2, description="Id of image"),
  *     @OA\Response(
@@ -107,7 +107,7 @@ Flight::route('DELETE /images/@id', function ($id) {
  * @OA\Delete(
  *     path="/favorite/{image_id}", security={{"ApiKeyAuth": {}}},
  *     description="Delete user image from favorites",
- *     tags={"images"},
+ *     tags={"favorites"},
  *     @OA\Parameter(in="path", name="image_id", example=1, description="Image ID"),
  *     @OA\Response(
  *         response=200,
