@@ -3,6 +3,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+use Dotenv\Dotenv;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
@@ -13,6 +14,11 @@ require_once __DIR__.'/services/AlbumService.class.php';
 require_once __DIR__.'/services/FavoriteImageService.class.php';
 
 require_once __DIR__.'/dao/UserDao.class.php';
+
+if (in_array($_SERVER['REMOTE_ADDR'], array('127.0.0.1', '::1'))) {
+    $dotenv = Dotenv::createImmutable(__DIR__);
+    $dotenv->load();
+}
 
 Flight::register('userDao', 'UserDao');
 Flight::register('userService', 'UserService');
