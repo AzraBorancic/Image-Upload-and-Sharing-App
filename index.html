@@ -12,6 +12,7 @@
         <link href="css/image-upload-style.css" rel="stylesheet">
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -22,7 +23,7 @@
             <!-- Navbar Search-->
             <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
                 <div class="input-group">
-                    <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+                    <input class="form-control" type="text" placeholder="Search by username..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
                     <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
                 </div>
             </form>
@@ -31,9 +32,7 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#!">User Settings</a></li>
-                        <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="#!">Logout</a></li>
+                        <li><a class="dropdown-item" href="#user-settings">User Settings</a></li>
                     </ul>
                 </li>
             </ul>
@@ -58,7 +57,7 @@
                                 Favorites
                             </a>
                             <div class="sb-sidenav-menu-heading">Configuration</div>
-                            <a class="nav-link" href="#settings">
+                            <a class="nav-link" href="#site-settings">
                                 <div class="sb-nav-link-icon"><i class="fas fa-gear"></i></div>
                                 Site Settings
                             </a>
@@ -82,6 +81,7 @@
                 </main>
             </div>
         </div>
+
         <script src="js/jquery-3.6.0.min.js"></script>
         <script src="js/scripts.js"></script>
         <script src="js/jquery.validate.min.js"></script>
