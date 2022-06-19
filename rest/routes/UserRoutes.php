@@ -3,6 +3,17 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
 /**
+ * @OA\Get(path="/me", tags={"login"}, security={{"ApiKeyAuth": {}}},
+ *         summary="Return current user data. ",
+ *         @OA\Response( response=200, description="List of images.")
+ * )
+ */
+Flight::route('GET /me', function () {
+  $user = Flight::get('user');
+  Flight::json($user);
+});
+
+/**
 * @OA\Post(
 *     path="/login",
 *     description="Login to the system",
