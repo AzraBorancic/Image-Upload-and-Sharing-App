@@ -1,67 +1,63 @@
-<!DOCTYPE html>
-<html>
-<body>
-  <div class="container-fluid">
-    <form enctype="multipart/form-data">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-12">
-            <div class="form-group">
-              <br />
-              <div class="preview-zone hidden mb-4">
-                <div class="box box-solid">
-                  <div class="box-header with-border">
-                    <div class="position-absolute top-0 start-0"><b>Image Preview</b></div>
-                    <div class="box-tools pull-right">
-                      <button type="button" class="btn btn-primary btn-sm remove-preview">
-                        <i class="fa fa-times"></i> Reset The Field
-                      </button>
-                    </div>
+<div class="container-fluid">
+  <form enctype="multipart/form-data">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <br />
+            <div class="preview-zone hidden mb-4">
+              <div class="box box-solid">
+                <div class="box-header with-border">
+                  <div class="position-absolute top-0 start-0">
+                    <b>Image Preview</b>
                   </div>
-                  <div class="box-body"></div>
+                  <div class="box-tools pull-right">
+                    <button
+                      type="button"
+                      class="btn btn-primary btn-sm remove-preview"
+                    >
+                      <i class="fa fa-times"></i> Reset The Field
+                    </button>
+                  </div>
                 </div>
+                <div class="box-body"></div>
               </div>
-              <div class="dropzone-wrapper">
-                <div class="dropzone-desc">
-                  <i class="glyphicon glyphicon-download-alt"></i>
-                  <p>Choose an image file or drag it here.</p>
-                </div>
-                <input type="file" name="img_logo" class="dropzone" multiple>
+            </div>
+            <div class="dropzone-wrapper">
+              <div class="dropzone-desc">
+                <i class="glyphicon glyphicon-download-alt"></i>
+                <p>Choose an image file or drag it here.</p>
               </div>
+              <input type="file" name="img_logo" class="dropzone" multiple />
             </div>
           </div>
         </div>
+      </div>
 
-        <div class="row">
-          <div class="col-md-12">
-            <button id="upload-button" type="button" class="btn btn-primary btn-sm pull-right">Upload</button>
-          </div>
+      <div class="row">
+        <div class="col-md-12">
+          <button
+            id="upload-button"
+            type="button"
+            class="btn btn-primary btn-sm pull-right"
+          >
+            Upload
+          </button>
         </div>
       </div>
-    </form>
-  </div>
+    </div>
+  </form>
 
-  <!--CARDS FOR IMAGES-->
-  <div class="card text-center">
-    <div class="card-header">
-      <ul class="nav nav-tabs card-header-tabs">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="true" href="#">@username</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" href="#">Add to album</a>
-          <!--IF USER HAS ALBUMS THEN THE LIST OF ALBUM NAMES SHOWS AND THE USER CAN CHOOSE, IF THE USER
-           DOES NOT HAVE ALBUMS THE FORM OPENS TO CREATE AN ALBUM, FIELD IS JUST ALBUM NAME
-          -->
-        </li>
-      </ul>
+  <main>
+    <div class="container-fluid">
+      <div class="gallery row">
+        
+      </div>
+      <!-- End of gallery -->
+
+      <div class="loader"></div>
     </div>
-  <div class="card" style="width: 18rem;">
-    <img src="..." class="card-img-top" alt="...">
-    <div class="card-body">
-      <a href="#" class="btn btn-primary">Like</a>
-    </div>
-  </div>
-  <script src="js/image-upload.js"></script>
-</body>
-</html>
+    <!-- End of container -->
+  </main>
+</div>
+<script src="js/image-upload.js"></script>

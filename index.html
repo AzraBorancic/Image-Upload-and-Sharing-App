@@ -1,92 +1,200 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <title>Bokeh - Image Sharing App</title>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <link href="css/styles.css" rel="stylesheet" />
-        <link href="css/bootstrap.min.css" rel="stylesheet">
-        <link href="css/image-upload-style.css" rel="stylesheet">
-        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
-        <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
-
-    </head>
-    <body class="sb-nav-fixed">
-        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <!-- Navbar Brand-->
-            <a class="navbar-brand ps-1 fs-6" href="#dashboard">Bokeh - Image Sharing App</a>
-            <!-- Sidebar Toggle-->
-            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
-            <!-- Navbar Search-->
-            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-                <div class="input-group">
-                    <input class="form-control" type="text" placeholder="Search by username..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
-                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
-                </div>
-            </form>
-            <!-- Navbar-->
-            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#user-settings">User Settings</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </nav>
-        <div id="layoutSidenav">
-            <div id="layoutSidenav_nav">
-                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-                    <div class="sb-sidenav-menu">
-                        <div class="nav">
-                            <div class="sb-sidenav-menu-heading">Main</div>
-                            <a class="nav-link" href="#dashboard">
-                                <div class="sb-nav-link-icon"><i class="fas fa-images"></i></div>
-                                Dashboard
-                            </a>
-                            <div class="sb-sidenav-menu-heading">Gallery</div>
-                            <a class="nav-link" href="#albums">
-                                <div class="sb-nav-link-icon"><i class="fas fa-folder-open"></i></div>
-                                Albums
-                            </a>
-                            <a class="nav-link collapsed" href="#favorites">
-                                <div class="sb-nav-link-icon"><i class="fas fa-star"></i></div>
-                                Favorites
-                            </a>
-                            <div class="sb-sidenav-menu-heading">Configuration</div>
-                            <a class="nav-link" href="#site-settings">
-                                <div class="sb-nav-link-icon"><i class="fas fa-gear"></i></div>
-                                Site Settings
-                            </a>
-                            <a class="nav-link" href="#" onclick="logout()">
-                                <div class="sb-nav-link-icon"><i class="fas fa-power-off"></i></div>
-                                Logout
-                            </a>
-                        </div>
-                    </div>
-                    <div class="sb-sidenav-footer">
-                        <div class="small">Logged in as:</div>
-                        user_name
-                    </div>
-                </nav>
-            </div>
-            <div id="layoutSidenav_content">
-                <main>
-                    <section id="dashboard" src="pages/dashboard.html" default></section>
-                    <section id="albums" src="pages/albums.html"></section>
-                    <section id="favorites" src="pages/favorites.html"></section>
-                </main>
-            </div>
+  <head>
+    <meta charset="utf-8" />
+    <title>Bokeh - Image Sharing App</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <link href="css/styles.css" rel="stylesheet" />
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/jQuerySPApp.css" rel="stylesheet" />
+    <link href="css/image-upload-style.css" rel="stylesheet" />
+    <link
+      href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css"
+      rel="stylesheet"
+    />
+    <script
+      src="https://use.fontawesome.com/releases/v6.1.0/js/all.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body class="sb-nav-fixed">
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+      <!-- Navbar Brand-->
+      <a class="navbar-brand ps-1 fs-6" href="#dashboard"
+        >Bokeh - Image Sharing App</a
+      >
+      <!-- Sidebar Toggle-->
+      <button
+        class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0"
+        id="sidebarToggle"
+        href="#!"
+      >
+        <i class="fas fa-bars"></i>
+      </button>
+      <!-- Navbar Search-->
+      <form
+        class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0"
+      >
+        <div class="input-group">
+          <input
+            class="form-control"
+            type="text"
+            placeholder="Search by username..."
+            aria-label="Search for..."
+            aria-describedby="btnNavbarSearch"
+          />
+          <button class="btn btn-primary" id="btnNavbarSearch" type="button">
+            <i class="fas fa-search"></i>
+          </button>
         </div>
+      </form>
+      <!-- Navbar-->
+      <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            id="navbarDropdown"
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+            ><i class="fas fa-user fa-fw"></i
+          ></a>
+          <ul
+            class="dropdown-menu dropdown-menu-end"
+            aria-labelledby="navbarDropdown"
+          >
+            <li>
+              <a class="dropdown-item" href="#user-settings">User Settings</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+    <div id="layoutSidenav">
+      <div id="layoutSidenav_nav">
+        <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+          <div class="sb-sidenav-menu">
+            <div class="nav">
+              <div class="sb-sidenav-menu-heading">Main</div>
+              <a class="nav-link" href="#dashboard">
+                <div class="sb-nav-link-icon">
+                  <i class="fas fa-images"></i>
+                </div>
+                Dashboard
+              </a>
+              <div class="sb-sidenav-menu-heading">Gallery</div>
+              <a class="nav-link" href="#albums">
+                <div class="sb-nav-link-icon">
+                  <i class="fas fa-folder-open"></i>
+                </div>
+                Albums
+              </a>
+              <a class="nav-link collapsed" href="#favorites">
+                <div class="sb-nav-link-icon"><i class="fas fa-star"></i></div>
+                Favorites
+              </a>
+              <div class="sb-sidenav-menu-heading">Configuration</div>
+              <a class="nav-link" href="#site-settings">
+                <div class="sb-nav-link-icon"><i class="fas fa-gear"></i></div>
+                Site Settings
+              </a>
+              <a class="nav-link" href="#" onclick="doLogout()">
+                <div class="sb-nav-link-icon">
+                  <i class="fas fa-power-off"></i>
+                </div>
+                Logout
+              </a>
+            </div>
+          </div>
+          <div class="sb-sidenav-footer">
+            <div class="small">Logged in as:</div>
+            <span id="username-span"></span>
+          </div>
+        </nav>
+      </div>
+      <div id="layoutSidenav_content">
+        <main id="jqueryspapp" role="main">
+          <section id="dashboard" src="dashboard.html" default></section>
+          <section id="albums" src="albums.html"></section>
+          <section id="favorites" src="favorites.html"></section>
+        </main>
+      </div>
+    </div>
 
-        <script src="js/jquery-3.6.0.min.js"></script>
-        <script src="js/scripts.js"></script>
-        <script src="js/jquery.validate.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
-        <script type="text/javascript" src="js/spapp.js"></script>
-    </body>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script src="js/jQuerySPApp.js"></script>
+    <script src="js/scripts.js"></script>
+    <script src="js/image-upload.js"></script>
+    <script src="js/jquery.validate.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/simple-datatables@latest"
+      crossorigin="anonymous"
+    ></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        var app = $.jQuerySPApp({ defaultView: "dashboard" }); // initialize
+        app.route(
+          {
+            view: "dashboard",
+            load: "dashboard.html",
+          },
+          {
+            view: "albums",
+            load: "albums.html",
+          },
+          {
+            view: "favorites",
+            load: "favorites.html",
+          }
+        );
+
+        app.run();
+
+        if (!window.localStorage.getItem("token")) {
+          window.location = "login.html";
+        } else {
+          $("body").show();
+          $.ajax({
+            url: "rest/me",
+            type: "GET",
+            beforeSend: function (xhr) {
+              xhr.setRequestHeader(
+                "Authorization",
+                localStorage.getItem("token")
+              );
+            },
+            success: function (data) {
+              localStorage.setItem("user", JSON.stringify(data));
+              $("#username-span").text(data["username"]);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+              toastr.error(XMLHttpRequest.responseJSON.message);
+              UserService.logout();
+            },
+          });
+        }
+      });
+
+      function doLogout() {
+        window.localStorage.clear();
+        window.location = "login.html";
+      }
+    </script>
+  </body>
 </html>
