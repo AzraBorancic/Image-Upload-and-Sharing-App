@@ -90,6 +90,21 @@ function uploadFile() {
   }
 }
 
+function copyLink() {
+  /* Get the text field */
+  var copyText = document.getElementById("image-url-share");
+
+  /* Select the text field */
+  copyText.select();
+  copyText.setSelectionRange(0, 99999); /* For mobile devices */
+
+   /* Copy the text inside the text field */
+  navigator.clipboard.writeText(copyText.value);
+
+  /* Alert the copied text */
+  toastr.success("Link copied successfully!");
+}
+
 function openModal(id) {
 
   $('#openModal').click();
@@ -103,17 +118,30 @@ function openModal(id) {
     success: function (data) {
       var imageHtml = "";
       imageHtml += '<div id="image-modal-container"';
-      imageHtml += ' class="row" >';
-      imageHtml += '<div class="col-md-9">'
-      imageHtml += "            <img";
+      imageHtml += ' class="row text-center" >';
+      imageHtml += '<div class="col-md-7">'
+      imageHtml += '            <img';
       imageHtml += '              src=';
       imageHtml += JSON.stringify(data[0]["s3_url"]);
       imageHtml += '              class="gallery-image"';
       imageHtml += '              alt=""';
       imageHtml += "            />";
       imageHtml += '</div>';
-      imageHtml += '<div class="col-md-3 text-center">';
-      imageHtml += 'Test';
+      imageHtml += '<div class="col-md-5 justify-content-center align-items-center d-flex">';
+      imageHtml += '<div class="d-grid gap-2 col-12 mx-auto">'
+      imageHtml += "<button class=\"btn btn-primary\" type=\"button\"> <i class=\"fa-solid fa-heart\"><\/i> Like<\/button>";
+      imageHtml += "<button class=\"btn btn-info\" type=\"button\"> <i class=\"fa-solid fa-folder-open\"><\/i>  Add to Album<\/button>";
+      imageHtml += "<button class=\"btn btn-warning\" type=\"button\"> <i class=\"fa-solid fa-star\"><\/i> Add to Favorites<\/button>";
+      imageHtml += "<div class=\"input-group mb-3\">";
+      imageHtml += "  <input id='image-url-share' type=\"text\" class=\"form-control\" placeholder=\"Image URL\" aria-describedby=\"button-addon2\" value=";
+      imageHtml += JSON.stringify(data[0]["s3_url"]);
+      imageHtml += ">";
+      imageHtml += '  <button onclick="copyLink()"  class=\"btn btn-secondary\" type=\"button\" id=\"button-addon2\"> <i class=\"fa-solid fa-copy\"><\/i> <\/button>';
+      imageHtml += "<\/div>";
+      imageHtml += "";
+      imageHtml += "<br \/>";
+      imageHtml += "<button class=\"btn btn-danger\" type=\"button\"> <i class=\"fa-solid fa-trash\"><\/i> Delete image<\/button>";
+      imageHtml += '</div>';
       imageHtml += '</div>';
       imageHtml += '</div>';
     
