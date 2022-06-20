@@ -1,6 +1,17 @@
 window.addEventListener(
   "DOMContentLoaded",
   function () {
+    var myModal = document.getElementById('exampleModalCenter')
+    
+    myModal.addEventListener('hidden.bs.modal', function () {
+      setTimeout(() => {
+        let element = document.getElementById('image-modal-container');
+        element.remove();
+        let modalBody = document.getElementById('modal-body');
+        modalBody.innerHTML = '<div id="loader-modal" class="loader text-center"></div>';
+      }, 500);
+    })
+
     getImages();
   },
   false
@@ -79,8 +90,45 @@ function uploadFile() {
   }
 }
 
+function openModal(id) {
+
+  $('#openModal').click();
+
+  $.ajax({
+    url: "rest/images/" + id,
+    type: "GET",
+    beforeSend: function (xhr) {
+      xhr.setRequestHeader("Authorization", localStorage.getItem("token"));
+    },
+    success: function (data) {
+      var imageHtml = "";
+      imageHtml += '<div id="image-modal-container"';
+      imageHtml += ' class="row" >';
+      imageHtml += '<div class="col-md-9">'
+      imageHtml += "            <img";
+      imageHtml += '              src=';
+      imageHtml += JSON.stringify(data[0]["s3_url"]);
+      imageHtml += '              class="gallery-image"';
+      imageHtml += '              alt=""';
+      imageHtml += "            />";
+      imageHtml += '</div>';
+      imageHtml += '<div class="col-md-3 text-center">';
+      imageHtml += 'Test';
+      imageHtml += '</div>';
+      imageHtml += '</div>';
+    
+      $('#loader-modal').addClass('d-none');
+      $('.modal-body').html(imageHtml);    
+    },
+    error: function (XMLHttpRequest, textStatus, errorThrown) {
+      toastr.error(XMLHttpRequest.responseJSON.message);
+      UserService.logout();
+    },
+  });
+}
+
 function getImages() {
-  $(".loader").removeClass('d-none');
+  $("#loader-dashboard").removeClass('d-none');
   $.ajax({
     url: "rest/images/all",
     type: "GET",
@@ -91,7 +139,9 @@ function getImages() {
       var galleryItems = "";
       for (const image of data) {
         var galleryItem = "";
-        galleryItem += '        <div id="gallery-item-';
+        galleryItem += '        <div onclick=\"openModal('
+        galleryItem += image["id"]
+        galleryItem += ')\" id="gallery-item-'
         galleryItem += image["id"];
         galleryItem += '"';
         galleryItem += '  class="col-md-3">';
@@ -99,7 +149,6 @@ function getImages() {
         galleryItem += "            <img";
         galleryItem += "              src=";
         galleryItem += JSON.stringify(image["s3_url"]);
-        galleryItem += '"';
         galleryItem += '              class="gallery-image"';
         galleryItem += '              alt=""';
         galleryItem += "            />";
@@ -121,7 +170,7 @@ function getImages() {
       }
 
       $(".gallery").html(galleryItems);
-      $(".loader").addClass('d-none');
+      $("#loader-dashboard").addClass('d-none');
       $(".remove-preview").click();
     },
     error: function (XMLHttpRequest, textStatus, errorThrown) {
