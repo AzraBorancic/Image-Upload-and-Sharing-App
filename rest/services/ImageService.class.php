@@ -28,7 +28,7 @@ class ImageService extends BaseService
 
     public function get_by_id($user, $id)
     {
-        $image = parent::get_by_id($user, $id);
+        $image = $this->dao->get_by_id_and_user($user['id'], $id);
         return $image;
     }
 

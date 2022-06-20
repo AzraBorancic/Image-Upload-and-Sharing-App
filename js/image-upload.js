@@ -129,7 +129,17 @@ function openModal(id) {
       imageHtml += '</div>';
       imageHtml += '<div class="col-md-5 justify-content-center align-items-center d-flex">';
       imageHtml += '<div class="d-grid gap-2 col-12 mx-auto">'
-      imageHtml += "<button class=\"btn btn-primary\" type=\"button\"> <i class=\"fa-solid fa-heart\"><\/i> Like<\/button>";
+      imageHtml += "<h1> Likes: ";
+      imageHtml += data[0]["number_of_likes"];
+      imageHtml += "<\/h1>"
+      imageHtml += "<\/br>";
+
+      if (data[0]['has_user_liked'] !== 1) {
+        imageHtml += "<button class=\"btn btn-primary\" type=\"button\"> <i class=\"fa-solid fa-heart\"><\/i> Like<\/button>";
+      } else {
+        imageHtml += "<button class=\"btn btn-secondary\" type=\"button\"> <i class=\"fa-solid fa-heart-crack\"><\/i> Dislike<\/button>";
+      }
+
       imageHtml += "<button class=\"btn btn-info\" type=\"button\"> <i class=\"fa-solid fa-folder-open\"><\/i>  Add to Album<\/button>";
       imageHtml += "<button class=\"btn btn-warning\" type=\"button\"> <i class=\"fa-solid fa-star\"><\/i> Add to Favorites<\/button>";
       imageHtml += "<div class=\"input-group mb-3\">";

@@ -29,4 +29,10 @@ class ImageDao extends BaseDao
         return $this->query('SELECT i.*, COUNT(uli.image_id) as number_of_likes, DATE_FORMAT(i.created_at, "%Y-%m-%d") as created_at FROM images i 
                                     JOIN users_liked_images uli ON uli.image_id = i.id AND i.id = :id', ['id' => $id]);
     }
+
+    public function get_by_id_and_user($user_id, $id)
+    {
+        return $this->query('SELECT i.*, COUNT(uli.image_id) as number_of_likes, CASE WHEN uli.user_id  = :user_id THEN 1 ELSE 0 END as has_user_liked, DATE_FORMAT(i.created_at, "%Y-%m-%d") as created_at FROM images i 
+                                    JOIN users_liked_images uli ON uli.image_id = i.id AND i.id = :id', ['id' => $id, 'user_id' => $user_id]);
+    }
 }
