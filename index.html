@@ -10,9 +10,9 @@
     />
     <meta name="description" content="" />
     <meta name="author" content="" />
+    <link href="css/jQuerySPApp.css" rel="stylesheet" />
     <link href="css/styles.css" rel="stylesheet" />
     <link href="css/bootstrap.min.css" rel="stylesheet" />
-    <link href="css/jQuerySPApp.css" rel="stylesheet" />
     <link href="css/image-upload-style.css" rel="stylesheet" />
     <link
       href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"
@@ -125,29 +125,44 @@
       </div>
       <div id="layoutSidenav_content">
         <main id="jqueryspapp" role="main">
-          <section id="dashboard" src="dashboard.html" default></section>
-          <section id="albums" src="albums.html"></section>
-          <section id="favorites" src="favorites.html"></section>
+          <section id="dashboard" default></section>
+          <section id="albums"></section>
+          <section id="favorites"></section>
         </main>
       </div>
     </div>
 
-
-    <button id="openModal" type="button" class="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
-    </button>
+    <button
+      id="openModal"
+      type="button"
+      class="btn btn-primary d-none"
+      data-bs-toggle="modal"
+      data-bs-target="#exampleModalCenter"
+    ></button>
 
     <!-- Modal -->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-            <div class="modal-content">
-                <div id="modal-body" class="modal-body">
-                  <div id="loader-modal" class="loader text-center"></div>
-                </div>
-            </div>
+    <div
+      class="modal fade"
+      id="exampleModalCenter"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalCenterTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+          <div id="modal-body" class="modal-body">
+            <div id="loader-modal" class="loader text-center"></div>
+          </div>
         </div>
+      </div>
     </div>
 
-    <script src="js/jquery-3.6.0.min.js"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
     <script src="js/jQuerySPApp.js"></script>
     <script src="js/scripts.js"></script>
     <script src="js/image-upload.js"></script>
@@ -164,20 +179,20 @@
     <script>
       $(document).ready(function () {
         var app = $.jQuerySPApp({ defaultView: "dashboard" }); // initialize
-        app.route(
-          {
-            view: "dashboard",
-            load: "dashboard.html",
-          },
-          {
-            view: "albums",
-            load: "albums.html",
-          },
-          {
-            view: "favorites",
-            load: "favorites.html",
-          }
-        );
+        app.route({
+          view: "dashboard",
+          load: "dashboard.html",
+        });
+
+        app.route({
+          view: "albums",
+          load: "albums.html",
+        });
+
+        app.route({
+          view: "favorites",
+          load: "favorites.html",
+        });
 
         app.run();
 

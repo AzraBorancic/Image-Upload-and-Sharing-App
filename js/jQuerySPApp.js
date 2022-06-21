@@ -29,7 +29,7 @@
         var route = routes[id];
         var elm   = $("#"+id);
   
-        if( ! elm || ! route) {
+        if(!elm || !route) {
           if(config.pageNotFound) {
             window.location.hash = config.pageNotFound;
             return;
@@ -42,11 +42,11 @@
           route.onReady();
         } else {
           elm.addClass("spapp-created");
-          if( ! route.load) {
+          if(!route.load) {
             route.onCreate();
             route.onReady();
           } else {
-            elm.load(config.templateDir+route.load, function() {
+            elm.load(config.templateDir + route.load, function() {
               route.onCreate();
               route.onReady();
             });
