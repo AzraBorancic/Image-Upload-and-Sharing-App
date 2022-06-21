@@ -134,22 +134,6 @@ function manageImageLikes(id, isLike = false) {
     },
     success: function (data) {
       getImages();
-
-      $.ajax({
-        url: "rest/images/" + id,
-        type: "GET",
-        beforeSend: function (xhr) {
-          xhr.setRequestHeader("Authorization", localStorage.getItem("token"));
-        },
-        success: function (data) {
-        
-          $('#like_number').html(data[0]['number_of_likes']);
-        },
-        error: function (XMLHttpRequest, textStatus, errorThrown) {
-          toastr.error(XMLHttpRequest.responseJSON.message);
-          UserService.logout();
-        },
-      });
     },
     error: function (XMLHttpRequest, textStatus, errorThrown) {
       toastr.error(XMLHttpRequest.responseJSON.message);
