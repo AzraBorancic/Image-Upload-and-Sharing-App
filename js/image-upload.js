@@ -105,6 +105,59 @@ function copyLink() {
   toastr.success("Link copied successfully!");
 }
 
+function manageImageLikes(id, isLike = false) {    
+  let likeHtml = "";
+  if (isLike) {
+    likeHtml += '<button onclick="manageImageLikes(';
+    likeHtml += id;
+    likeHtml += ')"  id="dislike_button" class=\"btn btn-secondary\" type=\"button\"> <i class=\"fa-solid fa-heart-crack\"><\/i> Dislike<\/button>';
+    $('#like_number').html(Number($('#like_number').text()) + 1);
+    $('#like_section').html(likeHtml);
+    toastr.success('Image successfully liked!');
+  } else {
+    likeHtml += '<button onclick="manageImageLikes(';
+    likeHtml += id;
+    likeHtml += ', true)" id="like_button" class=\"btn btn-primary\" type=\"button\"> <i class=\"fa-solid fa-heart\"><\/i> Like<\/button>';
+    $('#like_number').html(Number($('#like_number').text()) - 1);
+    $('#like_section').html(likeHtml);
+    toastr.warning('Image successfully disliked!');
+  }
+
+
+  $.ajax({
+    url: (isLike ? "rest/like/" : "rest/dislike/") + id ,
+    type: isLike ? "POST" : "DELETE",
+    contentType: false,
+    processData: false,
+    beforeSend: function (xhr) {
+      xhr.setRequestHeader("Authorization", localStorage.getItem("token"));
+    },
+    success: function (data) {
+      getImages();
+
+      $.ajax({
+        url: "rest/images/" + id,
+        type: "GET",
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader("Authorization", localStorage.getItem("token"));
+        },
+        success: function (data) {
+        
+          $('#like_number').html(data[0]['number_of_likes']);
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+          toastr.error(XMLHttpRequest.responseJSON.message);
+          UserService.logout();
+        },
+      });
+    },
+    error: function (XMLHttpRequest, textStatus, errorThrown) {
+      toastr.error(XMLHttpRequest.responseJSON.message);
+      UserService.logout();
+    },
+  });
+}
+
 function openModal(id) {
 
   $('#openModal').click();
@@ -130,16 +183,24 @@ function openModal(id) {
       imageHtml += '<div class="col-md-5 justify-content-center align-items-center d-flex">';
       imageHtml += '<div class="d-grid gap-2 col-12 mx-auto">'
       imageHtml += "<h1> Likes: ";
+      imageHtml += "<span id='like_number'>";
       imageHtml += data[0]["number_of_likes"];
-      imageHtml += "<\/h1>"
+      imageHtml += "<\/span>";
+      imageHtml += "<\/h1>";
       imageHtml += "<\/br>";
+      imageHtml += "<div id='like_section' class=\"d-grid gap-2 col-12 mx-auto\">";
 
       if (data[0]['has_user_liked'] !== 1) {
-        imageHtml += "<button class=\"btn btn-primary\" type=\"button\"> <i class=\"fa-solid fa-heart\"><\/i> Like<\/button>";
+        imageHtml += '<button onclick="manageImageLikes(';
+        imageHtml += data[0]['id'];
+        imageHtml += ', true)" id="like_button" class=\"btn btn-primary\" type=\"button\"> <i class=\"fa-solid fa-heart\"><\/i> Like<\/button>';
       } else {
-        imageHtml += "<button class=\"btn btn-secondary\" type=\"button\"> <i class=\"fa-solid fa-heart-crack\"><\/i> Dislike<\/button>";
+        imageHtml += '<button onclick="manageImageLikes(';
+        imageHtml += data[0]['id'];
+        imageHtml += ')"  id="dislike_button" class=\"btn btn-secondary\" type=\"button\"> <i class=\"fa-solid fa-heart-crack\"><\/i> Dislike<\/button>';
       }
 
+      imageHtml += '</div>'
       imageHtml += "<button class=\"btn btn-info\" type=\"button\"> <i class=\"fa-solid fa-folder-open\"><\/i>  Add to Album<\/button>";
       imageHtml += "<button class=\"btn btn-warning\" type=\"button\"> <i class=\"fa-solid fa-star\"><\/i> Add to Favorites<\/button>";
       imageHtml += "<div class=\"input-group mb-3\">";
