@@ -195,7 +195,11 @@ function openModal(id) {
       imageHtml += "<\/div>";
       imageHtml += "";
       imageHtml += "<br \/>";
-      imageHtml += "<button class=\"btn btn-danger\" type=\"button\"> <i class=\"fa-solid fa-trash\"><\/i> Delete image<\/button>";
+
+      if (JSON.parse(localStorage.getItem('user'))['id'] === data[0]['user_id']) {
+        imageHtml += "<button class=\"btn btn-danger\" type=\"button\"> <i class=\"fa-solid fa-trash\"><\/i> Delete image<\/button>";
+      }
+
       imageHtml += '</div>';
       imageHtml += '</div>';
       imageHtml += '</div>';
