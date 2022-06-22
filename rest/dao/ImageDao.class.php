@@ -40,12 +40,10 @@ class ImageDao extends BaseDao
         return $this->query('SELECT i.*, 
         COUNT(uli.image_id) as number_of_likes, 
         CASE WHEN uli.user_id  = :user_id THEN 1 ELSE 0 END as has_user_liked, 
-        CASE WHEN f.user_id  = :user_id THEN 1 ELSE 0 END as has_user_favorited,
+        case when fi.image_id is not null then 1 else 0 END as has_user_favorited,
         DATE_FORMAT(i.created_at, "%Y-%m-%d") as created_at 
         FROM images i 
         JOIN users_liked_images uli ON uli.image_id = i.id AND i.id = :id
-        left JOIN favorite_images fi on i.id = fi.image_id 
-        left JOIN favorites f ON fi.favorite_id = f.id
-        group by i.id;', ['id' => $id, 'user_id' => $user_id]);
+        left JOIN favorite_images fi on i.id = fi.image_id;', ['id' => $id, 'user_id' => $user_id]);
     }
 }
