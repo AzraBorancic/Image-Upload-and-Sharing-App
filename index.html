@@ -89,6 +89,12 @@
                 </div>
                 Albums
               </a>
+              <a id="album-link" class="nav-link d-none" href="#album">
+                <div class="sb-nav-link-icon">
+                  <i class="fas fa-folder-open"></i>
+                </div>
+                Album
+              </a>
               <a class="nav-link collapsed" href="#favorites">
                 <div class="sb-nav-link-icon"><i class="fas fa-star"></i></div>
                 Favorites
@@ -117,6 +123,7 @@
           <section id="dashboard" default></section>
           <section id="my-images"></section>
           <section id="albums"></section>
+          <section id="album"></section>
           <section id="favorites"></section>
         </main>
       </div>
@@ -190,6 +197,14 @@
           load: "albums.html",
           onReady: function () {
             getAlbums();
+          }
+        });
+
+        app.route({
+          view: "album",
+          load: "album.html",
+          onReady: function () {
+            getAlbum(localStorage.getItem('album_id'));
           }
         });
 

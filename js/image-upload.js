@@ -354,7 +354,10 @@ function getImages(myImages = false, favorites = false) {
 }
 
 function openAlbum(id) {
-  console.log(id);
+  localStorage.setItem('album_id', id);
+  setTimeout(() => {
+    document.getElementById('album-link').click();
+  }, 100);
 }
 
 function getAlbums() {
@@ -401,6 +404,10 @@ function getAlbums() {
       toastr.error(XMLHttpRequest.responseJSON.message);
     },
   });
+}
+
+function getAlbum(id) {
+  console.log(id);
 }
 
 $("#upload-button").click(function () {
