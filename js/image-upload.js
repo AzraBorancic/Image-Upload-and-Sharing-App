@@ -282,7 +282,18 @@ function openModal(id) {
 }
 
 function getImages(myImages = false, favorites = false) {
-  $("#loader-dashboard").removeClass('d-none');
+  $('.gallery-item').addClass('d-none');
+  switch (true) {
+    case myImages:
+      $("#loader-my-images").removeClass('d-none');
+      break;
+    case favorites:
+        $("#loader-favorites").removeClass('d-none');
+        break;
+    default:
+        $("#loader-dashboard").removeClass('d-none');
+        break;
+  }
   $.ajax({
     url: myImages ? "rest/images/" : favorites ? "rest/favorite" : "rest/images/all",
     type: "GET",
@@ -323,17 +334,16 @@ function getImages(myImages = false, favorites = false) {
         galleryItems += galleryItem;
       }
 
-
-      if (!myImages) {
-        $(".gallery").html(galleryItems);
-        $("#loader-dashboard").addClass('d-none');
-        $(".remove-preview").click();
+      if (myImages) {
+        $("#my-images-row").html(galleryItems);
+        $("#loader-my-images").addClass('d-none');
       } else if (favorites) {
         $("#favorites-row").html(galleryItems);
         $("#loader-favorites").addClass('d-none');
       } else {
-        $("#my-images-row").html(galleryItems);
-        $("#loader-my-items").addClass('d-none');
+        $(".gallery").html(galleryItems);
+        $("#loader-dashboard").addClass('d-none');
+        $(".remove-preview").click();
       }
 
     },

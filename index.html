@@ -172,7 +172,7 @@
         app.route({
           view: "dashboard",
           load: "dashboard.html",
-          onCreate: function () {
+          onReady: function () {
             getImages();
           }
         });
@@ -180,7 +180,7 @@
         app.route({
           view: "my-images",
           load: "my-images.html",
-          onCreate: function () {
+          onReady: function () {
             getImages(true);
           }
         });
@@ -193,7 +193,7 @@
         app.route({
           view: "favorites",
           load: "favorites.html",
-          onCreate: function () {
+          onReady: function () {
             getImages(false, true);
           }
         });
