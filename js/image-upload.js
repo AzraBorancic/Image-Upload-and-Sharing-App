@@ -428,7 +428,10 @@ function createAlbum() {
       xhr.setRequestHeader("Authorization", localStorage.getItem("token"));
     },
     success: function (data) {
-      $('loader-album-modal').addClass('d-none');
+      $("#album-name").val('');
+      $('#album-name').prop('disabled', false);
+      $('#save-button').prop('disabled', false);
+      $('#loader-album-modal').addClass('d-none');      
       $('#exampleModal').modal('toggle');
       toastr.success('Album successfully added!');
       getAlbums();
