@@ -20,7 +20,7 @@ function reset(e) {
   e.unwrap();
 }
 
-// Code By Webdevtrick ( https://webdevtrick.com )
+// Method By Webdevtrick ( https://webdevtrick.com )
 function readFile(input) {
   if (input.files && input.files[0]) {
     var wrapperZone = $(input).parent();
@@ -88,6 +88,7 @@ function uploadFile() {
   }
 }
 
+// Taken from w3schools
 function copyLink() {
   /* Get the text field */
   var copyText = document.getElementById("image-url-share");
@@ -131,7 +132,19 @@ function manageImageLikes(id, isLike = false) {
       xhr.setRequestHeader("Authorization", localStorage.getItem("token"));
     },
     success: function (data) {
-      getImages();
+      switch(window.location.hash) {
+        case '#dashboard':
+          getImages();
+          break;
+        case '#my-images':
+          getImages(true);
+          break;
+        case '#favorites':
+          getImages(false, true);
+          break;
+        default:
+          break;
+      }
     },
     error: function (XMLHttpRequest, textStatus, errorThrown) {
       toastr.error(XMLHttpRequest.responseJSON.message);
@@ -210,10 +223,10 @@ function openModal(id) {
   });
 }
 
-function getImages(myImages = false) {
+function getImages(myImages = false, favorites = false) {
   $("#loader-dashboard").removeClass('d-none');
   $.ajax({
-    url: !myImages ? "rest/images/all" : "rest/images/",
+    url: myImages ? "rest/images/" : favorites ? "rest/favorite" : "rest/images/all",
     type: "GET",
     beforeSend: function (xhr) {
       xhr.setRequestHeader("Authorization", localStorage.getItem("token"));
@@ -252,12 +265,16 @@ function getImages(myImages = false) {
         galleryItems += galleryItem;
       }
 
+
       if (!myImages) {
         $(".gallery").html(galleryItems);
         $("#loader-dashboard").addClass('d-none');
         $(".remove-preview").click();
-      } else {
+      } else if (favorites) {
         $("#favorites-row").html(galleryItems);
+        $("#loader-favorites").addClass('d-none');
+      } else {
+        $("#my-images-row").html(galleryItems);
         $("#loader-my-items").addClass('d-none');
       }
 

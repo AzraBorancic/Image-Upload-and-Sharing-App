@@ -187,12 +187,15 @@
 
         app.route({
           view: "albums",
-          load: "albums.html",
+          load: "albums.html"
         });
 
         app.route({
           view: "favorites",
           load: "favorites.html",
+          onCreate: function () {
+            getImages(false, true);
+          }
         });
 
         app.run();
