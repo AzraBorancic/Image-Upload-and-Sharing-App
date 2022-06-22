@@ -15,7 +15,7 @@ class FavoriteDao extends BaseDao
 
     public function get_favorite_images($user_id)
     {
-        $query = "SELECT i.* FROM images i JOIN favorite_images fi ON i.id = fi.image_id JOIN favorites f ON f.id = fi.id WHERE f.user_id = :user_id";
+        $query = "SELECT i.* FROM images i JOIN favorite_images fi ON i.id = fi.image_id JOIN favorites f ON fi.favorite_id = f.id WHERE f.user_id = :user_id";
         return $this->query($query, ['user_id' => $user_id]);
     }
 
