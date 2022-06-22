@@ -11,8 +11,6 @@ window.addEventListener(
         modalBody.innerHTML = '<div id="loader-modal" class="loader text-center"></div>';
       }, 500);
     })
-
-    getImages();
   },
   false
 );
@@ -137,7 +135,6 @@ function manageImageLikes(id, isLike = false) {
     },
     error: function (XMLHttpRequest, textStatus, errorThrown) {
       toastr.error(XMLHttpRequest.responseJSON.message);
-      UserService.logout();
     },
   });
 }
@@ -209,15 +206,14 @@ function openModal(id) {
     },
     error: function (XMLHttpRequest, textStatus, errorThrown) {
       toastr.error(XMLHttpRequest.responseJSON.message);
-      UserService.logout();
     },
   });
 }
 
-function getImages() {
+function getImages(myImages = false) {
   $("#loader-dashboard").removeClass('d-none');
   $.ajax({
-    url: "rest/images/all",
+    url: !myImages ? "rest/images/all" : "rest/images/",
     type: "GET",
     beforeSend: function (xhr) {
       xhr.setRequestHeader("Authorization", localStorage.getItem("token"));
@@ -256,13 +252,18 @@ function getImages() {
         galleryItems += galleryItem;
       }
 
-      $(".gallery").html(galleryItems);
-      $("#loader-dashboard").addClass('d-none');
-      $(".remove-preview").click();
+      if (!myImages) {
+        $(".gallery").html(galleryItems);
+        $("#loader-dashboard").addClass('d-none');
+        $(".remove-preview").click();
+      } else {
+        $("#favorites-row").html(galleryItems);
+        $("#loader-my-items").addClass('d-none');
+      }
+
     },
     error: function (XMLHttpRequest, textStatus, errorThrown) {
       toastr.error(XMLHttpRequest.responseJSON.message);
-      UserService.logout();
     },
   });
 }
