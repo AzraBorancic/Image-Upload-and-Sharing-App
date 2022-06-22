@@ -58,7 +58,7 @@
             aria-labelledby="navbarDropdown"
           >
             <li>
-              <a class="dropdown-item" href="#user-settings">User Settings</a>
+              <a onclick="doLogout()" class="dropdown-item" href="#"> <i class="fa-solid fa-power-off"></i> &nbsp;&nbsp; Log Out</a>
             </li>
           </ul>
         </li>
@@ -75,6 +75,12 @@
                   <i class="fas fa-images"></i>
                 </div>
                 Dashboard
+              </a>
+              <a class="nav-link" href="#my-images">
+                <div class="sb-nav-link-icon">
+                  <i class="fa-brands fa-instagram"></i>
+                </div>
+                My Images
               </a>
               <div class="sb-sidenav-menu-heading">Gallery</div>
               <a class="nav-link" href="#albums">
@@ -109,6 +115,7 @@
       <div id="layoutSidenav_content">
         <main id="jqueryspapp" role="main">
           <section id="dashboard" default></section>
+          <section id="my-images"></section>
           <section id="albums"></section>
           <section id="favorites"></section>
         </main>
@@ -165,6 +172,17 @@
         app.route({
           view: "dashboard",
           load: "dashboard.html",
+          onCreate: function () {
+            getImages();
+          }
+        });
+
+        app.route({
+          view: "my-images",
+          load: "my-images.html",
+          onCreate: function () {
+            getImages(true);
+          }
         });
 
         app.route({
@@ -198,7 +216,6 @@
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
               toastr.error(XMLHttpRequest.responseJSON.message);
-              UserService.logout();
             },
           });
         }
