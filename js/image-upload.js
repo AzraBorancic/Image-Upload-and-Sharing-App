@@ -361,6 +361,8 @@ function openAlbum(id) {
 }
 
 function getAlbums() {
+  // Album snippet and styling taken from https://codepen.io/shunyadezain/pen/GRqoWdG
+
   $(".album").addClass('d-none');
   $("#loader-albums").removeClass('d-none');
 
