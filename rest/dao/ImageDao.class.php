@@ -13,14 +13,19 @@ class ImageDao extends BaseDao
         parent::__construct("images");
     }
 
-    public function get_all_images() {
-        $query = "SELECT i.id, i.s3_url, i.user_id, i.created_at, COUNT(uli.image_id) as number_of_likes from images i left join users_liked_images uli ON uli.image_id = i.id group by i.id;";
+    public function get_all_images()
+    {
+        $query = "SELECT i.id, i.s3_url, i.user_id, i.created_at, 
+                  COUNT(uli.image_id) as number_of_likes
+                  from images i left join users_liked_images uli ON uli.image_id = i.id group by i.id;";
         return $this->query($query, []);
     }
 
     public function get_images($user_id, $search = NULL)
     {
-        $query = "SELECT i.id, i.s3_url, i.user_id, i.created_at, COUNT(uli.image_id) as number_of_likes from images i left join users_liked_images uli ON uli.image_id = i.id WHERE i.user_id = :user_id group by i.id;";
+        $query = "SELECT i.id, i.s3_url, i.user_id, i.created_at, 
+                  COUNT(uli.image_id) as number_of_likes
+                  from images i left join users_liked_images uli ON uli.image_id = i.id WHERE i.user_id = :user_id group by i.id;";
         return $this->query($query, ['user_id' => $user_id]);
     }
 
@@ -32,7 +37,15 @@ class ImageDao extends BaseDao
 
     public function get_by_id_and_user($user_id, $id)
     {
-        return $this->query('SELECT i.*, COUNT(uli.image_id) as number_of_likes, CASE WHEN uli.user_id  = :user_id THEN 1 ELSE 0 END as has_user_liked, DATE_FORMAT(i.created_at, "%Y-%m-%d") as created_at FROM images i 
-                                    JOIN users_liked_images uli ON uli.image_id = i.id AND i.id = :id', ['id' => $id, 'user_id' => $user_id]);
+        return $this->query('SELECT i.*, 
+        COUNT(uli.image_id) as number_of_likes, 
+        CASE WHEN uli.user_id  = :user_id THEN 1 ELSE 0 END as has_user_liked, 
+        CASE WHEN f.user_id  = :user_id THEN 1 ELSE 0 END as has_user_favorited,
+        DATE_FORMAT(i.created_at, "%Y-%m-%d") as created_at 
+        FROM images i 
+        JOIN users_liked_images uli ON uli.image_id = i.id AND i.id = :id
+        left JOIN favorite_images fi on i.id = fi.image_id 
+        left JOIN favorites f ON fi.favorite_id = f.id
+        group by i.id;', ['id' => $id, 'user_id' => $user_id]);
     }
 }

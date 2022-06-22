@@ -15,6 +15,7 @@ require_once __DIR__.'/services/FavoriteImageService.class.php';
 require_once __DIR__.'/services/UserLikedImageService.class.php';
 
 require_once __DIR__.'/dao/UserDao.class.php';
+require_once __DIR__.'/dao/FavoriteDao.class.php';
 
 if (in_array($_SERVER['REMOTE_ADDR'], array('127.0.0.1', '::1'))) {
     $dotenv = Dotenv::createImmutable(__DIR__);
@@ -22,6 +23,7 @@ if (in_array($_SERVER['REMOTE_ADDR'], array('127.0.0.1', '::1'))) {
 }
 
 Flight::register('userDao', 'UserDao');
+Flight::register('favoriteDao', 'FavoriteDao');
 Flight::register('userService', 'UserService');
 Flight::register('imageService', 'ImageService');
 Flight::register('albumService', 'AlbumService');

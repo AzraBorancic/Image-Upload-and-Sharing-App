@@ -152,8 +152,54 @@ function manageImageLikes(id, isLike = false) {
   });
 }
 
-function openModal(id) {
+function manageFavorites(id, imageId, removeFromFavorites = false) {
+  let favoriteHtml = "";
+  if (!removeFromFavorites) {
+    favoriteHtml += "<button id='remove-favorite-button'";
+    favoriteHtml += String('onclick=manageFavorites(' + id + ', ' + imageId + ', ' + true + ')');
+    favoriteHtml += " class=\"btn btn-warning\" type=\"button\"> <i class=\"fa-solid fa-star\"><\/i> Remove from Favorites<\/button>";
+    $('#favorite_section').html(favoriteHtml);
+    toastr.success('Image added to favorites!');
+  } else {
+    favoriteHtml += "<button id='favorite-button'";
+    favoriteHtml += String('onclick=manageFavorites(' + id + ',' + imageId + ')')
+    favoriteHtml += " class=\"btn btn-success\" type=\"button\"> <i class=\"fa-solid fa-star\"><\/i> Add to Favorites<\/button>";
+    $('#favorite_section').html(favoriteHtml);
+    toastr.warning('Image removed from favorites!');
+  }
 
+
+  $.ajax({
+    url: !removeFromFavorites ? "rest/favorite/" + id + "/" + imageId : "rest/favorite/" + imageId,
+    type: !removeFromFavorites ? "POST" : "DELETE",
+    contentType: false,
+    processData: false,
+    beforeSend: function (xhr) {
+      xhr.setRequestHeader("Authorization", localStorage.getItem("token"));
+    },
+    success: function (data) {
+      switch(window.location.hash) {
+        case '#dashboard':
+          getImages();
+          break;
+        case '#my-images':
+          getImages(true);
+          break;
+        case '#favorites':
+          getImages(false, true);
+          break;
+        default:
+          break;
+      }
+    },
+    error: function (XMLHttpRequest, textStatus, errorThrown) {
+      toastr.error(XMLHttpRequest.responseJSON.message);
+    },
+  });
+}
+
+function openModal(id) {
+  let favoriteId = JSON.parse(localStorage.getItem('user'))['favorite_id'];
   $('#openModal').click();
 
   $.ajax({
@@ -195,8 +241,20 @@ function openModal(id) {
       }
 
       imageHtml += '</div>'
+      imageHtml += "<div id='favorite_section' class=\"d-grid gap-2 col-12 mx-auto\">";
+
+      if (data[0]['has_user_favorited'] !== 1) {
+        imageHtml += "<button id='favorite_button'";
+        imageHtml += String('onclick=manageFavorites(' + favoriteId + ',' + id + ')')
+        imageHtml += " class=\"btn btn-success\" type=\"button\"> <i class=\"fa-solid fa-star\"><\/i> Add to Favorites<\/button>";
+      } else {
+        imageHtml += "<button id='remove-favorite-button'";
+        imageHtml += String('onclick=manageFavorites(' + favoriteId + ',' + id + ',' + true + ')');
+        imageHtml += " class=\"btn btn-warning\" type=\"button\"> <i class=\"fa-solid fa-star\"><\/i> Remove from Favorites<\/button>";
+      }
+
+      imageHtml += '</div>'
       imageHtml += "<button class=\"btn btn-info\" type=\"button\"> <i class=\"fa-solid fa-folder-open\"><\/i>  Add to Album<\/button>";
-      imageHtml += "<button class=\"btn btn-warning\" type=\"button\"> <i class=\"fa-solid fa-star\"><\/i> Add to Favorites<\/button>";
       imageHtml += "<div class=\"input-group mb-3\">";
       imageHtml += "  <input id='image-url-share' type=\"text\" class=\"form-control\" placeholder=\"Image URL\" aria-describedby=\"button-addon2\" value=";
       imageHtml += JSON.stringify(data[0]["s3_url"]);
@@ -236,7 +294,7 @@ function getImages(myImages = false, favorites = false) {
       for (const image of data) {
         var galleryItem = "";
         galleryItem += '        <div onclick=\"openModal('
-        galleryItem += image["id"]
+        galleryItem += String(image["id"]);
         galleryItem += ')\" id="gallery-item-'
         galleryItem += image["id"];
         galleryItem += '"';

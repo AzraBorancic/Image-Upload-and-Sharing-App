@@ -10,6 +10,8 @@ use Firebase\JWT\Key;
  */
 Flight::route('GET /me', function () {
   $user = Flight::get('user');
+  $favorite = Flight::favoriteDao()->get_by_user_id($user['id']);
+  $user['favorite_id'] = $favorite['id'];
   Flight::json($user);
 });
 
