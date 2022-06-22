@@ -1,7 +1,7 @@
 window.addEventListener(
   "DOMContentLoaded",
   function () {
-    var myModal = document.getElementById('exampleModalCenter')
+    var myModal = document.getElementById('exampleModalCenter');
     
     myModal.addEventListener('hidden.bs.modal', function () {
       setTimeout(() => {
@@ -10,7 +10,7 @@ window.addEventListener(
         let modalBody = document.getElementById('modal-body');
         modalBody.innerHTML = '<div id="loader-modal" class="loader text-center"></div>';
       }, 500);
-    })
+    });
   },
   false
 );
@@ -378,7 +378,7 @@ function getAlbums() {
         albumHtml += album['id'];
         albumHtml += '" onclick="openAlbum(';
         albumHtml += album['id'];
-        albumHtml += ")\" class=\"album col-md-3 col-xs-12\" style=\"display: flex; justify-content: center; align-items: center; width: 200px; height: 200px; cursor: pointer;\">";
+        albumHtml += ")\" class=\"album col-md-3 col-xs-12\" style=\"display: flex; justify-content: center; align-items: center; cursor: pointer;\">";
         albumHtml += "          <div class=\"folder\">";
         albumHtml += "            <div class=\"folder__back\">";
         albumHtml += "              <div class=\"paper\"><\/div>";
@@ -387,7 +387,7 @@ function getAlbums() {
         albumHtml += "              <div class=\"folder__front\"><\/div>";
         albumHtml += "              <div class=\"folder__front right\"><\/div>";
         albumHtml += "            <\/div>";
-        albumHtml += "            <h5 class=\"text-center mt-2\">"
+        albumHtml += "            <h5 class=\"text-center mt-2 mb-5\">"
         albumHtml += album['name']
         albumHtml += "<\/h5>";
         albumHtml += "          <\/div>";
@@ -408,6 +408,36 @@ function getAlbums() {
 
 function getAlbum(id) {
   console.log(id);
+}
+
+function createAlbum() {
+  let albumName = $("#album-name").val();
+  $('#album-name').prop('disabled', true);
+  $('#save-button').prop('disabled', true);
+  $('#loader-album-modal').removeClass('d-none');
+
+  $.ajax({
+    url: "rest/albums",
+    type: "POST",
+    data: {
+      name: albumName
+    },
+    beforeSend: function (xhr) {
+      xhr.setRequestHeader("Authorization", localStorage.getItem("token"));
+    },
+    success: function (data) {
+      $('loader-album-modal').addClass('d-none');
+      $('#exampleModal').modal('toggle');
+      toastr.success('Album successfully added!');
+      getAlbums();
+    },
+    error: function (XMLHttpRequest, textStatus, errorThrown) {
+      $('#album-name').prop('disabled', false);
+      $('#save-button').prop('disabled', false);
+      $('loader-album-modal').addClass('d-none');
+      toastr.error(XMLHttpRequest.responseJSON.message);
+    },
+  });
 }
 
 $("#upload-button").click(function () {
