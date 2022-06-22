@@ -353,6 +353,56 @@ function getImages(myImages = false, favorites = false) {
   });
 }
 
+function openAlbum(id) {
+  console.log(id);
+}
+
+function getAlbums() {
+  $(".album").addClass('d-none');
+  $("#loader-albums").removeClass('d-none');
+
+  $.ajax({
+    url: "rest/albums",
+    type: "GET",
+    beforeSend: function (xhr) {
+      xhr.setRequestHeader("Authorization", localStorage.getItem("token"));
+    },
+    success: function (data) {
+      var albums = "";
+      for (const album of data) {
+        var albumHtml = "";
+        albumHtml += "        <div id=\"album-";
+        albumHtml += album['id'];
+        albumHtml += '" onclick="openAlbum(';
+        albumHtml += album['id'];
+        albumHtml += ")\" class=\"album col-md-3 col-xs-12\" style=\"display: flex; justify-content: center; align-items: center; width: 200px; height: 200px; cursor: pointer;\">";
+        albumHtml += "          <div class=\"folder\">";
+        albumHtml += "            <div class=\"folder__back\">";
+        albumHtml += "              <div class=\"paper\"><\/div>";
+        albumHtml += "              <div class=\"paper\"><\/div>";
+        albumHtml += "              <div class=\"paper\"><\/div>";
+        albumHtml += "              <div class=\"folder__front\"><\/div>";
+        albumHtml += "              <div class=\"folder__front right\"><\/div>";
+        albumHtml += "            <\/div>";
+        albumHtml += "            <h5 class=\"text-center mt-2\">"
+        albumHtml += album['name']
+        albumHtml += "<\/h5>";
+        albumHtml += "          <\/div>";
+        albumHtml += "        <\/div>";
+        
+        albums += albumHtml;
+      }
+
+      $("#album-row").html(albums);
+      $("#loader-albums").addClass('d-none');
+
+    },
+    error: function (XMLHttpRequest, textStatus, errorThrown) {
+      toastr.error(XMLHttpRequest.responseJSON.message);
+    },
+  });
+}
+
 $("#upload-button").click(function () {
   uploadFile();
 });

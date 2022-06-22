@@ -11,7 +11,7 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <link href="css/jQuerySPApp.css" rel="stylesheet" />
-    <link href="css/styles.css" rel="stylesheet" />
+    <link type="text/css" rel="stylesheet" href="css/styles.css" rel="stylesheet" />
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <link href="css/image-upload-style.css" rel="stylesheet" />
     <link
@@ -187,7 +187,10 @@
 
         app.route({
           view: "albums",
-          load: "albums.html"
+          load: "albums.html",
+          onReady: function () {
+            getAlbums();
+          }
         });
 
         app.route({
