@@ -409,7 +409,56 @@ function getAlbums() {
 }
 
 function getAlbum(id) {
-  console.log(id);
+  $('.gallery-item').addClass('d-none');
+  $("#loader-album").removeClass('d-none');
+
+  $.ajax({
+    url: "rest/albums/" + id,
+    type: "GET",
+    beforeSend: function (xhr) {
+      xhr.setRequestHeader("Authorization", localStorage.getItem("token"));
+    },
+    success: function (data) {
+      var galleryItems = "";
+      for (const image of data['images']) {
+        var galleryItem = "";
+        galleryItem += '        <div onclick=\"openModal('
+        galleryItem += String(image["id"]);
+        galleryItem += ')\" id="gallery-item-'
+        galleryItem += image["id"];
+        galleryItem += '"';
+        galleryItem += '  class="col-md-3">';
+        galleryItem += '          <div class="gallery-item" tabindex="0">';
+        galleryItem += "            <img";
+        galleryItem += "              src=";
+        galleryItem += JSON.stringify(image["s3_url"]);
+        galleryItem += '              class="gallery-image"';
+        galleryItem += '              alt=""';
+        galleryItem += "            />";
+        galleryItem += "";
+        galleryItem += '            <div class="gallery-item-info">';
+        galleryItem += "              <ul>";
+        galleryItem += '                <li class="gallery-item-likes">';
+        galleryItem +=
+          '                  <span class="visually-hidden">Likes:</span';
+        galleryItem +=
+          '                  ><i class="fas fa-heart" aria-hidden="true"></i> ';
+        galleryItem += image['number_of_likes'];
+        galleryItem += "                </li>";
+        galleryItem += "              </ul>";
+        galleryItem += "            </div>";
+        galleryItem += "          </div>";
+        galleryItem += "        </div>";
+        galleryItems += galleryItem;
+      }
+
+      $("#individual-album-row").html(galleryItems);
+      $("#loader-album").addClass('d-none');
+    },
+    error: function (XMLHttpRequest, textStatus, errorThrown) {
+      toastr.error(XMLHttpRequest.responseJSON.message);
+    },
+  });
 }
 
 function createAlbum() {

@@ -14,6 +14,18 @@ class AlbumImageDao extends BaseDao{
     $query = "SELECT i.* FROM album_images al JOIN images i ON al.image_id = i.id AND al.album_id = :id";
     return $this->query($query, ['id' => $id]);
   }
-}
 
-?>
+  public function get_by_id_and_user($user_id, $id)
+  {
+    return $this->query('SELECT i.*, 
+    COUNT(uli.image_id) as number_of_likes, 
+    CASE WHEN uli.user_id  = :user_id THEN 1 ELSE 0 END as has_user_liked, 
+    case when fi.image_id is not null then 1 else 0 END as has_user_favorited,
+    DATE_FORMAT(i.created_at, "%Y-%m-%d") as created_at 
+    FROM images i
+    JOIN album_images al on al.image_id = i.id AND al.album_id = :id
+    left JOIN users_liked_images uli ON uli.image_id = i.id
+    left JOIN favorite_images fi on i.id = fi.image_id
+    group by i.id;', ['id' => $id, 'user_id' => $user_id]);
+  }
+}

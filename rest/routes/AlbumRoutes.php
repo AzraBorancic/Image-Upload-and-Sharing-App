@@ -22,7 +22,7 @@ Flight::route('GET /albums', function () {
  */
 Flight::route('GET /albums/@id', function ($id) {
     Flight::json([
-        'images' => Flight::albumService()->get_by_id(Flight::get('user'), $id)
+        'images' => Flight::albumService()->get_by_id_and_user(Flight::get('user'), $id)
     ]);
 });
 

@@ -33,6 +33,12 @@ class AlbumService extends BaseService
         return $album_images;
     }
 
+    public function get_by_id_and_user($user, $id)
+    {
+        $album_images = $this->album_image_dao->get_by_id_and_user($user['id'], $id);
+        return $album_images;
+    }
+
     public function add($user, $entity)
     {
 
