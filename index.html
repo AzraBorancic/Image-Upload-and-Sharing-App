@@ -204,7 +204,7 @@
           view: "album",
           load: "album.html",
           onReady: function () {
-            getAlbum(localStorage.getItem('album_id'));
+            getAlbum(localStorage.getItem('album_id'), localStorage.getItem('album_name'));
           }
         });
 

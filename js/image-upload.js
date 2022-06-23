@@ -353,8 +353,9 @@ function getImages(myImages = false, favorites = false) {
   });
 }
 
-function openAlbum(id) {
+function openAlbum(id, name) {
   localStorage.setItem('album_id', id);
+  localStorage.setItem('album_name', name);
   setTimeout(() => {
     document.getElementById('album-link').click();
   }, 100);
@@ -379,7 +380,7 @@ function getAlbums() {
         albumHtml += "        <div id=\"album-";
         albumHtml += album['id'];
         albumHtml += '" onclick="openAlbum(';
-        albumHtml += album['id'];
+        albumHtml += String(album['id'] + ',\'' + album['name'] + '\'');
         albumHtml += ")\" class=\"album col-md-3 col-xs-12\" style=\"display: flex; justify-content: center; align-items: center; cursor: pointer;\">";
         albumHtml += "          <div class=\"folder\">";
         albumHtml += "            <div class=\"folder__back\">";
@@ -408,9 +409,10 @@ function getAlbums() {
   });
 }
 
-function getAlbum(id) {
+function getAlbum(id, name) {
   $('.gallery-item').addClass('d-none');
   $("#loader-album").removeClass('d-none');
+  $('#album-title').html(name);
 
   $.ajax({
     url: "rest/albums/" + id,
