@@ -1,7 +1,7 @@
 <?php
+error_reporting(E_ALL);
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 
 use Dotenv\Dotenv;
 use Firebase\JWT\JWT;
@@ -30,14 +30,14 @@ Flight::register('albumService', 'AlbumService');
 Flight::register('favoriteImageService', 'FavoriteImageService');
 Flight::register('userLikedImageService', 'userLikedImageService');
 
-// Flight::map('error', function($ex){
-//     // Handle error
-//     if ($ex instanceof Exception) {
-//       Flight::json(['message' => $ex->getMessage()], 500);
-//     } else {
-//       Flight::json(['message' => var_dump($ex)], 500);
-//     }
-// });
+Flight::map('error', function($ex){
+    // Handle error
+    if ($ex instanceof Exception) {
+      Flight::json(['message' => $ex->getMessage()], 500);
+    } else {
+      Flight::json(['message' => var_dump($ex)], 500);
+    }
+});
 
 /* utility function for reading query parameters from URL */
 Flight::map('query', function($name, $default_value = ''){
