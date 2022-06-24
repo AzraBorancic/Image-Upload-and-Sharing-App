@@ -56,20 +56,12 @@ class AlbumService extends BaseService
 
     public function update($user, $id, $entity)
     {
-        $album = $this->dao->get_by_id($id);
-        if ($album['user_id'] != $user['id']) {
-            throw new Exception("This is hack you will be traced, be prepared :)");
-        }
-        unset($entity['user_id']);
         return parent::update($user, $id, $entity);
     }
 
     public function delete($user, $id)
     {
         $album = $this->dao->get_by_id($id);
-        if ($album['user_id'] != $user['id']) {
-            throw new Exception("This is hack you will be traced, be prepared :)");
-        }
         parent::delete($user, $id);
     }
 }

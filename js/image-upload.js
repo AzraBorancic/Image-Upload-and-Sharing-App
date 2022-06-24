@@ -142,6 +142,9 @@ function manageImageLikes(id, isLike = false) {
         case '#favorites':
           getImages(false, true);
           break;
+        case '#album':
+          getAlbum(localStorage.getItem('album_id'), localStorage.getItem('album_name'));
+          break;
         default:
           break;
       }
@@ -187,6 +190,9 @@ function manageFavorites(id, imageId, removeFromFavorites = false) {
           break;
         case '#favorites':
           getImages(false, true);
+          break;
+        case '#album':
+          getAlbum(localStorage.getItem('album_id'), localStorage.getItem('album_name'));
           break;
         default:
           break;
@@ -413,6 +419,7 @@ function getAlbum(id, name) {
   $('.gallery-item').addClass('d-none');
   $("#loader-album").removeClass('d-none');
   $('#album-title').html(name);
+  $('#album-name-edit').val(name);
 
   $.ajax({
     url: "rest/albums/" + id,
@@ -464,8 +471,8 @@ function getAlbum(id, name) {
 }
 
 function createAlbum() {
-  let albumName = $("#album-name").val();
-  $('#album-name').prop('disabled', true);
+  let albumName = $("#album-name-modal").val();
+  $('#album-name-modal').prop('disabled', true);
   $('#save-button').prop('disabled', true);
   $('#loader-album-modal').removeClass('d-none');
 
@@ -490,6 +497,69 @@ function createAlbum() {
     error: function (XMLHttpRequest, textStatus, errorThrown) {
       $('#album-name').prop('disabled', false);
       $('#save-button').prop('disabled', false);
+      $('loader-album-modal').addClass('d-none');
+      toastr.error(XMLHttpRequest.responseJSON.message);
+    },
+  });
+}
+
+function editAlbum() {
+  let albumName = $("#album-name-edit").val();
+  $('#album-name-edit').prop('disabled', true);
+  $('#edit-button').prop('disabled', true);
+  $('#loader-album-modal-edit').removeClass('d-none');
+
+  $.ajax({
+    url: "rest/albums/" + localStorage.getItem('album_id'),
+    type: 'PUT',
+    data: JSON.stringify({
+      name: albumName
+    }),
+    contentType: "application/json",
+    dataType: "json",
+    beforeSend: function (xhr) {
+      xhr.setRequestHeader("Authorization", localStorage.getItem("token"));
+    },
+    success: function (data) {
+      $("#album-name-modal").val('');
+      $('#album-name-modal').prop('disabled', false);
+      $('#edit-button').prop('disabled', false);
+      $('#loader-album-modal-edit').addClass('d-none');      
+      $('#editModal').modal('toggle');
+      toastr.success('Album successfully added!');
+      getAlbum(localStorage.getItem('album_id'), albumName);
+    },
+    error: function (XMLHttpRequest, textStatus, errorThrown) {
+      $('#album-name-modal').prop('disabled', false);
+      $('#edit-button').prop('disabled', false);
+      $('loader-album-modal-edit').addClass('d-none');
+      toastr.error(XMLHttpRequest.responseJSON.message);
+    },
+  });
+}
+
+function deleteAlbum() {
+  let albumId = localStorage.getItem('album_id');
+  $('#delete-button').prop('disabled', true);
+  $('#loader-album-modal-individual').removeClass('d-none');
+
+  $.ajax({
+    url: "rest/albums/" + albumId,
+    type: "DELETE",
+    beforeSend: function (xhr) {
+      xhr.setRequestHeader("Authorization", localStorage.getItem("token"));
+    },
+    success: function (data) {
+      $('#delete-button').prop('disabled', false);
+      $('#loader-album-modal-individual').addClass('d-none');      
+      $('#deleteModal').modal('toggle');
+      toastr.success('Album successfully deleted!');
+      setTimeout(() => {
+        document.getElementById('albums-link').click();
+      }, 100);
+    },
+    error: function (XMLHttpRequest, textStatus, errorThrown) {
+      $('#delete-button').prop('disabled', false);
       $('loader-album-modal').addClass('d-none');
       toastr.error(XMLHttpRequest.responseJSON.message);
     },
