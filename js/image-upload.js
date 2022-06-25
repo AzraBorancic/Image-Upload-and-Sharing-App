@@ -321,7 +321,11 @@ function openModal(id) {
         JSON.parse(localStorage.getItem("user"))["id"] === data[0]["user_id"]
       ) {
         imageHtml +=
-          '<button class="btn btn-danger" type="button"> <i class="fa-solid fa-trash"></i> Delete image</button>';
+          "<div id='album_section' class=\"d-grid gap-2 col-12 mx-auto\">";
+        imageHtml += '<button id="delete-image-button" onclick="deleteImage(';
+        imageHtml += data[0]['id'];
+        imageHtml += ')" class="btn btn-danger" type="button"> <i class="fa-solid fa-trash"></i> Delete image</button>';
+        imageHtml += "</div>";
       }
 
       imageHtml += "</div>";
@@ -359,6 +363,55 @@ function openModal(id) {
       });
     },
     error: function (XMLHttpRequest, textStatus, errorThrown) {
+      toastr.error(XMLHttpRequest.responseJSON.message);
+    },
+  });
+}
+
+function deleteImage(id) {
+  $("#delete-image-button").prop("disabled", true);
+  toastr.info("Image delete in progress...");
+
+  $.ajax({
+    url: "rest/images/" + id,
+    type: "DELETE",
+    beforeSend: function (xhr) {
+      xhr.setRequestHeader("Authorization", localStorage.getItem("token"));
+    },
+    success: function (data) {
+      $("#delete-image-button").prop("disabled", false);
+      $("#loader-album-modal-individual").addClass("d-none");
+
+      switch (window.location.hash) {
+        case "#dashboard":
+          getImages();
+          break;
+        case "#my-images":
+          getImages(true);
+          break;
+        case "#favorites":
+          getImages(false, true);
+          break;
+        case "#album":
+          getAlbum(
+            localStorage.getItem("album_id"),
+            localStorage.getItem("album_name")
+          );
+          break;
+        default:
+          break;
+      }
+      
+      if (window.location.hash !== '#album') {
+        $("#exampleModalCenter").modal('toggle');
+      } else {
+        $("#imageModal").modal('toggle');
+      }
+      toastr.success("Image successfully deleted!");
+    },
+    error: function (XMLHttpRequest, textStatus, errorThrown) {
+      $("#delete-button").prop("disabled", false);
+      $("loader-album-modal").addClass("d-none");
       toastr.error(XMLHttpRequest.responseJSON.message);
     },
   });
