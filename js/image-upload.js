@@ -1,9 +1,9 @@
 window.addEventListener(
   "DOMContentLoaded",
   function () {
-    var myModal = document.getElementById("exampleModalCenter");
+    var imageModal = document.getElementById("exampleModalCenter");
 
-    myModal.addEventListener("hidden.bs.modal", function () {
+    imageModal.addEventListener("hidden.bs.modal", function () {
       setTimeout(() => {
         let element = document.getElementById("image-modal-container");
         element.remove();
@@ -221,7 +221,11 @@ function manageFavorites(id, imageId, removeFromFavorites = false) {
 
 function openModal(id) {
   let favoriteId = JSON.parse(localStorage.getItem("user"))["favorite_id"];
-  $("#openModal").click();
+  if (window.location.hash !== "#album") {
+    $("#openModal").click();
+  } else {
+    $("#openImageModal").click();
+  }
 
   $.ajax({
     url: "rest/images/" + id,
@@ -295,10 +299,10 @@ function openModal(id) {
       imageHtml +=
         '<select id=\'album-select\' class="form-select d-none" aria-label="Default select example">';
       imageHtml += "</select>";
+      imageHtml += '  <button id="album-add-button" onclick="addToAlbum(';
+      imageHtml += data[0]["id"];
       imageHtml +=
-      '  <button id="album-add-button" onclick="addToAlbum(';
-      imageHtml += data[0]['id'];
-      imageHtml += ')" class="btn btn-success d-none" type="button" id="button-addon2"> <i class="fa-solid fa-check"></i> </button>';
+        ')" class="btn btn-success d-none" type="button" id="button-addon2"> <i class="fa-solid fa-check"></i> </button>';
       imageHtml += "</div>";
       imageHtml += '<div class="input-group mb-3">';
       imageHtml +=
@@ -325,7 +329,11 @@ function openModal(id) {
       imageHtml += "</div>";
 
       $("#loader-modal").addClass("d-none");
-      $(".modal-body").html(imageHtml);
+      if (window.location.hash !== "#album") {
+        $(".modal-body").html(imageHtml);
+      } else {
+        $("#album-image-modal-body").html(imageHtml);
+      }
 
       $.ajax({
         url: "rest/albums",
@@ -339,7 +347,7 @@ function openModal(id) {
                                        ${album["name"]}
                                   </option>`);
           }
-          $("#album-show-button").prop('disabled', false);
+          $("#album-show-button").prop("disabled", false);
         },
         error: function (
           AlbumXMLHttpRequest,
@@ -581,26 +589,25 @@ function createAlbum() {
 }
 
 function addToAlbum(imageId) {
-  let albumId = $('#album-select').val();
-  $('#album-add-button').prop('disabled', true);
-  toastr.info('Adding to album...');
+  let albumId = $("#album-select").val();
+  $("#album-add-button").prop("disabled", true);
+  toastr.info("Adding to album...");
 
   $.ajax({
-    url: "rest/albums/" + albumId + '/images/' + imageId,
+    url: "rest/albums/" + albumId + "/images/" + imageId,
     type: "POST",
     beforeSend: function (xhr) {
       xhr.setRequestHeader("Authorization", localStorage.getItem("token"));
     },
     success: function (data) {
-      $('#album-add-button').prop('disabled', false);
+      $("#album-add-button").prop("disabled", false);
       toastr.success("Image successfully added to album!");
     },
     error: function (XMLHttpRequest, textStatus, errorThrown) {
-      $('#album-add-button').prop('disabled', false);
+      $("#album-add-button").prop("disabled", false);
       toastr.error(XMLHttpRequest.responseJSON.message);
     },
   });
-  
 }
 
 function editAlbum() {

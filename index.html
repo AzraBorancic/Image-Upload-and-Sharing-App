@@ -11,7 +11,12 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <link href="css/jQuerySPApp.css" rel="stylesheet" />
-    <link type="text/css" rel="stylesheet" href="css/styles.css" rel="stylesheet" />
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="css/styles.css"
+      rel="stylesheet"
+    />
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <link href="css/image-upload-style.css" rel="stylesheet" />
     <link
@@ -42,7 +47,9 @@
         <i class="fas fa-bars"></i>
       </button>
       <!-- Navbar-->
-      <ul class="navbar-nav ms-auto d-md-inline-block ms-auto me-0 me-md-3 my-2 my-md-0">
+      <ul
+        class="navbar-nav ms-auto d-md-inline-block ms-auto me-0 me-md-3 my-2 my-md-0"
+      >
         <li class="nav-item dropdown">
           <a
             class="nav-link dropdown-toggle"
@@ -58,7 +65,9 @@
             aria-labelledby="navbarDropdown"
           >
             <li>
-              <a onclick="doLogout()" class="dropdown-item" href="#"> <i class="fa-solid fa-power-off"></i> &nbsp;&nbsp; Log Out</a>
+              <a onclick="doLogout()" class="dropdown-item" href="#">
+                <i class="fa-solid fa-power-off"></i> &nbsp;&nbsp; Log Out</a
+              >
             </li>
           </ul>
         </li>
@@ -181,7 +190,7 @@
           load: "dashboard.html",
           onReady: function () {
             getImages();
-          }
+          },
         });
 
         app.route({
@@ -189,7 +198,7 @@
           load: "my-images.html",
           onReady: function () {
             getImages(true);
-          }
+          },
         });
 
         app.route({
@@ -197,15 +206,29 @@
           load: "albums.html",
           onReady: function () {
             getAlbums();
-          }
+          },
         });
 
         app.route({
           view: "album",
           load: "album.html",
           onReady: function () {
-            getAlbum(localStorage.getItem('album_id'), localStorage.getItem('album_name'));
-          }
+            var imageAlbumModal = document.getElementById("imageModal");
+
+            imageAlbumModal.addEventListener("hidden.bs.modal", function () {
+              setTimeout(() => {
+                let element = document.getElementById("image-modal-container");
+                element.remove();
+                let modalBody = document.getElementById("album-image-modal-body");
+                modalBody.innerHTML =
+                  '<div id="loader-modal-album-image" class="loader text-center"></div>';
+              }, 500);
+            });
+            getAlbum(
+              localStorage.getItem("album_id"),
+              localStorage.getItem("album_name")
+            );
+          },
         });
 
         app.route({
@@ -213,7 +236,7 @@
           load: "favorites.html",
           onReady: function () {
             getImages(false, true);
-          }
+          },
         });
 
         app.run();
