@@ -20,7 +20,7 @@ class AlbumImageDao extends BaseDao
 
   public function get_by_id_and_user($user_id, $id)
   {
-    return $this->query('SELECT i.id, i.s3_url, i.user_id, i.created_at, 
+    return $this->query('SELECT i.id, i.s3_url, i.user_id, i.created_at, al.id as album_image_id,
     COUNT(distinct uli.image_id) as number_of_likes,
     CASE WHEN uli.user_id  = :user_id THEN 1 ELSE 0 END as has_user_liked,
     case when fi.image_id is not null then 1 else 0 END as has_user_favorited

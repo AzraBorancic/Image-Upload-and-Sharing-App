@@ -5,23 +5,25 @@
         <div class="col-md-4">
           <h1>Albums</h1>
         </div>
-        <div class="col-md-4"></div>
-        <div class="col-md-4">
-          <button
-            style="float: right;"
-            type="button"
-            class="btn btn-primary"
-            data-bs-toggle="modal"
-            data-bs-target="#exampleModal"
-          >
+        <div class="col-md-8">
+          <div class="input-group mt-2">
+            <input id="album-search-input" type="text" class="form-control" placeholder="Search albums..." aria-label="Search albums..." aria-describedby="button-addon">
+            <button
+              style="float: right;"
+              type="button"
+              class="btn btn-primary"
+              data-bs-toggle="modal"
+              data-bs-target="#exampleModal"
+            >
             <i class="fa-solid fa-plus"></i> &nbsp;&nbsp; Add New
           </button>
+          </div>
         </div>
       </div>
       <br />
       <br />
       <br />
-      <div id="album-row" class="row"></div>
+      <div id="album-row" class="row ml-2 mr-2"></div>
     </div>
   </div>
   <div id="loader-albums" class="loader"></div>

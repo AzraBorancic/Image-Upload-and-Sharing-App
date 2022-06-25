@@ -219,7 +219,7 @@ function manageFavorites(id, imageId, removeFromFavorites = false) {
   });
 }
 
-function openModal(id) {
+function openModal(id, albumImageId = null) {
   let favoriteId = JSON.parse(localStorage.getItem("user"))["favorite_id"];
   if (window.location.hash !== "#album") {
     $("#openModal").click();
@@ -293,17 +293,25 @@ function openModal(id) {
 
       imageHtml +=
         "<div id='album_section' class=\"d-grid gap-2 col-12 mx-auto\">";
-      imageHtml +=
+      if (window.location.hash !== '#album') {
+        imageHtml +=
         '<button id="album-show-button" onclick="revealAlbumSelect()" class="btn btn-info" type="button"> <i class="fa-solid fa-folder-open" disabled="true"></i>  Add to Album</button>';
-      imageHtml += '<div class="input-group">';
-      imageHtml +=
-        '<select id=\'album-select\' class="form-select d-none" aria-label="Default select example">';
-      imageHtml += "</select>";
-      imageHtml += '  <button id="album-add-button" onclick="addToAlbum(';
-      imageHtml += data[0]["id"];
-      imageHtml +=
-        ')" class="btn btn-success d-none" type="button" id="button-addon2"> <i class="fa-solid fa-check"></i> </button>';
-      imageHtml += "</div>";
+        imageHtml += '<div class="input-group">';
+        imageHtml +=
+          '<select id=\'album-select\' class="form-select d-none" aria-label="Default select example">';
+        imageHtml += "</select>";
+        imageHtml += '  <button id="album-add-button" onclick="addToAlbum(';
+        imageHtml += data[0]["id"];
+        imageHtml += ')" class="btn btn-success d-none" type="button" id="button-addon2"> <i class="fa-solid fa-check"></i> </button>';
+        imageHtml += '<input id="album-name-open-modal" name="name" type="text" class="form-control d-none" placeholder="Name" aria-label="Name">'
+        imageHtml += '<button id="save-album-button" type="button" class="btn btn-primary d-none" onclick="createAlbum()">Save</button>';
+        imageHtml += "</div>";
+      } else {
+        imageHtml +=
+          '<button id="album-remove-button" onclick="removeFromAlbum('
+        imageHtml += albumImageId;
+        imageHtml += ')" class="btn btn-danger" type="button"> <i class="fa-solid fa-folder-open" disabled="true"></i>  Remove From Album</button>';
+      }
       imageHtml += '<div class="input-group mb-3">';
       imageHtml +=
         '  <input id=\'image-url-share\' type="text" class="form-control" placeholder="Image URL" aria-describedby="button-addon2" value=';
@@ -348,7 +356,7 @@ function openModal(id) {
         success: function (albumData) {
           for (const album of albumData) {
             $("#album-select").append(`<option value="${album["id"]}">
-                                       ${album["name"]}
+                                        ${album["name"]}
                                   </option>`);
           }
           $("#album-show-button").prop("disabled", false);
@@ -366,6 +374,33 @@ function openModal(id) {
       toastr.error(XMLHttpRequest.responseJSON.message);
     },
   });
+}
+
+function removeFromAlbum(album_image_id) {
+  $("#album-remove-button").prop("disabled", true);
+  toastr.info("Removal of image from album in progress...");
+
+  $.ajax({
+    url: "rest/albums/image/" + album_image_id,
+    type: "DELETE",
+    beforeSend: function (xhr) {
+      xhr.setRequestHeader("Authorization", localStorage.getItem("token"));
+    },
+    success: function (data) {
+      $("#album-remove-button").prop("disabled", false);
+      getAlbum(
+        localStorage.getItem("album_id"),
+        localStorage.getItem("album_name")
+      );      
+      $("#imageModal").modal('toggle');
+      toastr.success("Image removed from album!");
+    },
+    error: function (XMLHttpRequest, textStatus, errorThrown) {
+      $("#album-remove-button").prop("disabled", false);
+      toastr.error(XMLHttpRequest.responseJSON.message);
+    },
+  });
+
 }
 
 function deleteImage(id) {
@@ -410,16 +445,22 @@ function deleteImage(id) {
       toastr.success("Image successfully deleted!");
     },
     error: function (XMLHttpRequest, textStatus, errorThrown) {
-      $("#delete-button").prop("disabled", false);
-      $("loader-album-modal").addClass("d-none");
+      $("#delete-image-button").prop("disabled", false);
       toastr.error(XMLHttpRequest.responseJSON.message);
     },
   });
 }
 
 function revealAlbumSelect() {
-  $("#album-select").removeClass("d-none");
-  $("#album-add-button").removeClass("d-none");
+  if ($("#album-select option").length > 0) {
+    $("#album-select").removeClass("d-none");
+    $("#album-add-button").removeClass("d-none"); 
+  } else {
+    toastr.info('No albums exist, please create a new one!');
+    $("#album-name-open-modal").removeClass("d-none");
+    $("#save-album-button").removeClass("d-none");
+  }
+
 }
 
 function getImages(myImages = false, favorites = false) {
@@ -505,14 +546,14 @@ function openAlbum(id, name) {
   }, 100);
 }
 
-function getAlbums() {
+function getAlbums(query = null) {
   // Album snippet and styling taken from https://codepen.io/shunyadezain/pen/GRqoWdG
 
   $(".album").addClass("d-none");
   $("#loader-albums").removeClass("d-none");
 
   $.ajax({
-    url: "rest/albums",
+    url: "rest/albums" + (query == null ? "" : ("?search=" + query)),
     type: "GET",
     beforeSend: function (xhr) {
       xhr.setRequestHeader("Authorization", localStorage.getItem("token"));
@@ -571,6 +612,12 @@ function getAlbum(id, name) {
         var galleryItem = "";
         galleryItem += '        <div onclick="openModal(';
         galleryItem += String(image["id"]);
+
+        if (window.location.hash === '#album') {
+          galleryItem += ','
+          galleryItem += image['album_image_id'];
+        }
+
         galleryItem += ')" id="gallery-item-';
         galleryItem += image["id"];
         galleryItem += '"';
@@ -609,10 +656,18 @@ function getAlbum(id, name) {
 }
 
 function createAlbum() {
-  let albumName = $("#album-name-modal").val();
-  $("#album-name-modal").prop("disabled", true);
-  $("#save-button").prop("disabled", true);
-  $("#loader-album-modal").removeClass("d-none");
+  toastr.info('Album creation started...');
+  let albumName = "";
+  if (window.location.hash === '#albums') {
+    albumName = $("#album-name-modal").val();
+    $("#album-name-modal").prop("disabled", true);
+    $("#save-button").prop("disabled", true);
+    $("#loader-album-modal").removeClass("d-none");
+  } else {
+    albumName = $("#album-name-open-modal").val();
+    $("#album-name-open-modal").prop("disabled", true);
+    $("#save-album-button").prop("disabled", true);
+  }
 
   $.ajax({
     url: "rest/albums",
@@ -624,13 +679,49 @@ function createAlbum() {
       xhr.setRequestHeader("Authorization", localStorage.getItem("token"));
     },
     success: function (data) {
-      $("#album-name").val("");
-      $("#album-name").prop("disabled", false);
-      $("#save-button").prop("disabled", false);
-      $("#loader-album-modal").addClass("d-none");
-      $("#exampleModal").modal("toggle");
-      toastr.success("Album successfully added!");
-      getAlbums();
+      if (window.location.hash === '#albums') {
+        $("#album-name-modal").val("");
+        $("#album-name-modal").prop("disabled", false);
+        $("#save-button").prop("disabled", false);
+        $("#loader-album-modal").addClass("d-none");
+        $("#exampleModal").modal("toggle");
+      } else {
+        $("#album-name-open-modal").val("");
+        $("#album-name-open-modal").prop("disabled", false);
+        $("#save-album-button").prop("disabled", false);
+      }
+      toastr.success("Album successfully added, fetching data...");
+
+      if (window.location.hash === '#albums') {
+        getAlbums();
+      } else {
+        $.ajax({
+          url: "rest/albums",
+          type: "GET",
+          beforeSend: function (xhr) {
+            xhr.setRequestHeader("Authorization", localStorage.getItem("token"));
+          },
+          success: function (albumData) {
+            for (const album of albumData) {
+              $("#album-select").append(`<option value="${album["id"]}">
+                                          ${album["name"]}
+                                    </option>`);
+            }
+            $("#album-show-button").prop("disabled", false);
+            $("#album-select").removeClass("d-none");
+            $("#album-add-button").removeClass("d-none");
+            $("#album-name-open-modal").addClass("d-none");
+            $("#save-album-button").addClass("d-none");
+          },
+          error: function (
+            AlbumXMLHttpRequest,
+            albumTextStatus,
+            albumErrorThrown
+          ) {
+            toastr.error(AlbumXMLHttpRequest.responseJSON.message);
+          },
+        });
+      }
     },
     error: function (XMLHttpRequest, textStatus, errorThrown) {
       $("#album-name").prop("disabled", false);

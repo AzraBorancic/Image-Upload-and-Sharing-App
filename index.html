@@ -206,6 +206,13 @@
           load: "albums.html",
           onReady: function () {
             getAlbums();
+            var debounce = null;
+            $("#album-search-input").on("keyup", function (e) {
+              clearTimeout(debounce);
+              debounce = setTimeout(function () {
+                getAlbums($("#album-search-input").val());
+              }, 1000);
+            });
           },
         });
 
@@ -219,7 +226,9 @@
               setTimeout(() => {
                 let element = document.getElementById("image-modal-container");
                 element.remove();
-                let modalBody = document.getElementById("album-image-modal-body");
+                let modalBody = document.getElementById(
+                  "album-image-modal-body"
+                );
                 modalBody.innerHTML =
                   '<div id="loader-modal-album-image" class="loader text-center"></div>';
               }, 500);
