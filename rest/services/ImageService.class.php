@@ -52,6 +52,7 @@ class ImageService extends BaseService
                     'Bucket' => $_ENV['AWS_BUCKET'],
                     'Key'    => $name,
                     'Body'   => fopen($file['tmp_name'], 'r'),
+                    'ContentType' =>'image/jpeg',
                     'ACL'    => 'public-read', // make file 'public'
                 ]);
                 echo "Image uploaded successfully. Image path is: " . $result->get('ObjectURL');
