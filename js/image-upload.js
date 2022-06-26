@@ -16,11 +16,6 @@ window.addEventListener(
   false
 );
 
-function reset(e) {
-  e.wrap("<form>").closest("form").get(0).reset();
-  e.unwrap();
-}
-
 // Method By Webdevtrick ( https://webdevtrick.com )
 function readFile(input) {
   if (input.files && input.files[0]) {
@@ -55,6 +50,8 @@ function readFile(input) {
 }
 
 function uploadFile() {
+  toastr.info('Image upload in progress...');
+  $("#upload-button").prop('disabled', true);
   var fd = new FormData();
   var files = $(".dropzone")[0].files;
 
@@ -77,11 +74,16 @@ function uploadFile() {
           console.log(response);
           $(".gallery").html();
           toastr.success("Image successfully uploaded!");
+          $(".remove-preview").click();
+          $("#upload-button").prop('disabled', false);
           getImages();
         } else {
           toastr.error("Image upload failed: ", response);
           console.log("file not uploaded");
         }
+      },
+      error: function (XMLHttpRequest, textStatus, errorThrown) {
+        toastr.error(XMLHttpRequest.responseJSON.message);
       },
     });
   } else {
@@ -529,7 +531,6 @@ function getImages(myImages = false, favorites = false) {
       } else {
         $(".gallery").html(galleryItems);
         $("#loader-dashboard").addClass("d-none");
-        $(".remove-preview").click();
       }
     },
     error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -816,32 +817,3 @@ function deleteAlbum() {
     },
   });
 }
-
-$("#upload-button").click(function () {
-  uploadFile();
-});
-
-$(".dropzone").change(function () {
-  readFile(this);
-});
-
-$(".dropzone-wrapper").on("dragover", function (e) {
-  e.preventDefault();
-  e.stopPropagation();
-  $(this).addClass("dragover");
-});
-
-$(".dropzone-wrapper").on("dragleave", function (e) {
-  e.preventDefault();
-  e.stopPropagation();
-  $(this).removeClass("dragover");
-});
-
-$(".remove-preview").on("click", function () {
-  var boxZone = $(this).parents(".preview-zone").find(".box-body");
-  var previewZone = $(this).parents(".preview-zone");
-  var dropzone = $(this).parents(".form-group").find(".dropzone");
-  boxZone.empty();
-  previewZone.addClass("hidden");
-  reset(dropzone);
-});
