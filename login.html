@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Bokeh - Image Sharing App</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <link href="css/jQuerySPApp.css" rel="stylesheet" />
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="css/styles.css"
+      rel="stylesheet"
+    />
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/image-upload-style.css" rel="stylesheet" />
+    <link
+      href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css"
+      rel="stylesheet"
+    />
+    <script
+      src="https://use.fontawesome.com/releases/v6.1.0/js/all.js"
+      crossorigin="anonymous"
+    ></script>
+</head>
+
+<body class="bg-primary">
+    <div id="layoutAuthentication">
+        <div id="layoutAuthentication_content_login">
+            <main>
+                <div class="container ">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-5 ">
+                            <div class="card shadow-lg border-0 rounded-lg mt-5 ">
+                                <div class="card-header ">
+                                    <h3 class="text-center font-weight-light my-4 ">Login</h3>
+                                </div>
+                                <div class="card-body ">
+                                    <form id='loginForm'>
+                                        <div class="form-floating mb-3 ">
+                                            <input class="form-control " id="inputEmail" type="email" name="email"
+                                                placeholder="Email" />
+                                            <label for="inputEmail ">Email</label>
+                                        </div>
+                                        <div class="form-floating mb-3 ">
+                                            <input class="form-control" id="inputPassword" type="password" name="password"
+                                                placeholder="Password" />
+                                            <label for="inputPassword">Password</label>
+                                        </div>
+                                        <div class="d-flex align-items-center justify-content-between mt-4 mb-0 ">
+                                            <a class="small " id='switch-forgot-password' href="# ">Forgot Password?</a>
+                                            <button id="login-button" class="btn btn-primary" type="submit" name="">Login</a>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="card-footer text-center py-3 ">
+                                    <div class="small "><button id='switch-button-login' class='btn btn-primary'>Need an
+                                            account? Sign up!</button></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+        <div id="layoutAuthentication_content_register" class="d-none">
+            <main>
+                <div class="container ">
+                    <div class="row justify-content-center ">
+                        <div class="col-lg-7 ">
+                            <div class="card shadow-lg border-0 rounded-lg mt-5 ">
+                                <div class="card-header ">
+                                    <h3 class="text-center font-weight-light my-4 ">Create Account</h3>
+                                </div>
+                                <div class="card-body ">
+                                    <form id='registerForm'>
+                                        <div class="row mb-3 ">
+                                            <div class="col-md-12 ">
+                                                <div class="form-floating mb-3 mb-md-0 ">
+                                                    <input required minlength='3' name="username" class="form-control"
+                                                        id="inputUserName " type="text "
+                                                        placeholder="Enter your username " />
+                                                    <label for="inputUserName ">Username</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3 ">
+                                            <div class="col-md-12 ">
+                                                <div class="form-floating mb-3 mb-md-0 ">
+                                                    <input class="form-control " id="inputFirstName" type="text" name="first_name"
+                                                    placeholder="First Name" />
+                                                <label for="inputFirstName ">First Name</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3 ">
+                                            <div class="col-md-12 ">
+                                                <div class="form-floating mb-3 mb-md-0 ">
+                                                    <input class="form-control " id="inputLastName" type="text" name="last_name"
+                                                    placeholder="Last Name" />
+                                                <label for="inputLastName ">Last Name</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3 ">
+                                            <div class="col-md-6 ">
+                                                <div class="form-floating mb-3 mb-md-0 ">
+                                                    <input required class="form-control" id="inputPassword "
+                                                        name="password" type="password"
+                                                        placeholder="Create a password " />
+                                                    <label for="inputPassword ">Password</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 ">
+                                                <div class="form-floating mb-3 mb-md-0 ">
+                                                    <input required class="form-control" id="inputPasswordConfirm "
+                                                        name="confirm_password" type="password"
+                                                        placeholder="Confirm password" />
+                                                    <label for="inputPasswordConfirm ">Confirm Password</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-floating mb-3 ">
+                                            <input required class="form-control " id="inputEmail " type="email"
+                                                name="email" placeholder="name@example.com " />
+                                            <label for="inputEmail ">Email address</label>
+                                        </div>
+                                        <div class="form-floating mb-3 ">
+                                            <input class="form-control " id="inputPhone " type="tel" name="phone_number"
+                                                placeholder="Phone Number " />
+                                            <label for="inputPhone ">Phone Number</label>
+                                        </div>
+                                        <div class="mt-4 mb-0 ">
+                                            <div class="d-grid "><input id="register-button" class="btn btn-primary btn-block" type="submit"
+                                                    name='' value="Create Account" /></div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="card-footer text-center py-3 ">
+                                    <div class="small "><button id='switch-button-register' class='btn btn-primary'>Have
+                                            an account? Go to login</button></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+        <div id="layoutAuthentication_content_forgot_password" class="d-none">
+            <main>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-5">
+                            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                                <div class="card-header">
+                                    <h3 class="text-center font-weight-light my-4">Password Recovery</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="small mb-3 text-muted">Enter your email address and we will send you a
+                                        link to reset your password.</div>
+                                    <form id="forgotPasswordForm">
+                                        <div class="form-floating mb-3">
+                                            <input class="form-control" id="inputEmail" type="email" name="email"
+                                                placeholder="name@example.com" />
+                                            <label for="inputEmail">Email address</label>
+                                        </div>
+                                        <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
+                                            <a class="small" id="switch-link-login" href="#">Return to login</a>
+                                            <button class="btn btn-primary" type="submit" name="">Reset Password</a>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="card-footer text-center py-3">
+                                    <div class="small"><a id="switch-link-register" href="#">Need an account? Sign
+                                            up!</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+        <div id="layoutAuthentication_content_set_new_password" class="d-none">
+            <main>
+                <div class="container ">
+                    <div class="row justify-content-center ">
+                        <div class="col-lg-7 ">
+                            <div class="card shadow-lg border-0 rounded-lg mt-5 ">
+                                <div class="card-header ">
+                                    <h3 class="text-center font-weight-light my-4 ">Reset Password</h3>
+                                </div>
+                                <div class="card-body ">
+                                    <form id='newPasswordForm'>
+                                        <div class="row mb-3 ">
+                                            <div class="col-md-6 ">
+                                                <div class="form-floating mb-3 mb-md-0 ">
+                                                    <input required class="form-control" id="inputPassword "
+                                                        name="new_password" type="password"
+                                                        placeholder="New Password" />
+                                                    <label for="inputPassword ">New Password</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 ">
+                                                <div class="form-floating mb-3 mb-md-0 ">
+                                                    <input required class="form-control" id="inputPasswordConfirm"
+                                                        name="confirm_password" type="password"
+                                                        placeholder="Confirm password" />
+                                                    <label for="inputPasswordConfirm ">Confirm Password</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mt-4 mb-0 ">
+                                            <div class="d-grid "><input class="btn btn-primary btn-block" type="submit"
+                                                    name='' value="Reset Password" /></div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
+    <script src="js/jQuerySPApp.js"></script>
+    <script src="js/scripts.js"></script>
+    <script src="js/jquery.validate.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+
+            if (localStorage.getItem('token')) {
+                window.location.replace(window.location.origin + String(window.location.pathname).replace('login.html', '#dashboard'));
+            }
+
+            $("#newPasswordForm").on('submit', function (event) {
+                event.preventDefault();
+
+                var values = {
+                    reset_token: localStorage.getItem('reset_token')
+                };
+                $.each($('#newPasswordForm').serializeArray(), function (i, field) {
+                    values[field.name] = field.value;
+                });
+
+                $.post('rest/reset-password', values, function (data, status) {
+                    if (data['status'] === 'ok') {
+                        toastr.success(data['message']);
+                        $('#layoutAuthentication_content_register').addClass('d-none');
+                        $('#layoutAuthentication_content_forgot_password').addClass('d-none');
+                        $('#layoutAuthentication_content_activate_2fa').addClass('d-none');
+                        $('#layoutAuthentication_content_activate_2fa_qr').addClass('d-none');
+                        $('#layoutAuthentication_content_enter_login_otp').addClass('d-none');
+                        $('#layoutAuthentication_content_main_screen').addClass('d-none');
+                        $('#layoutAuthentication_content_set_new_password').addClass('d-none');
+                        $('#layoutAuthentication_content_login').removeClass('d-none');
+                    } else {
+                        toastr.error(data['message']);
+                    }
+                })
+                
+            })
+
+            $("#forgotPasswordForm").on('submit', function (event) {
+                event.preventDefault();
+
+                var values = {};
+                $.each($('#forgotPasswordForm').serializeArray(), function (i, field) {
+                    values[field.name] = field.value;
+                });
+
+                $.get('rest/reset-password/' + values['email'], function (data, status) {
+                    if (data['status'] === 'ok') {
+                        toastr.success(data['message']);
+                        $('#layoutAuthentication_content_register').addClass('d-none');
+                        $('#layoutAuthentication_content_forgot_password').addClass('d-none');
+                        $('#layoutAuthentication_content_activate_2fa').addClass('d-none');
+                        $('#layoutAuthentication_content_activate_2fa_qr').addClass('d-none');
+                        $('#layoutAuthentication_content_enter_login_otp').addClass('d-none');
+                        $('#layoutAuthentication_content_main_screen').addClass('d-none');
+                        $('#layoutAuthentication_content_login').removeClass('d-none');
+                    } else {
+                        toastr.error(data['message']);
+                    }
+                })
+                
+            })
+
+            $("#loginForm").on('submit', function (event) {
+                event.preventDefault();
+                toastr.info('Logging in...');
+                $("#login-button").prop('disabled', true);
+
+                var values = {};
+                $.each($('#loginForm').serializeArray(), function (i, field) {
+                    values[field.name] = field.value;
+                });
+
+                $.ajax({
+                    url: "rest/login",
+                    type: "POST",
+                    data: values,
+                    success: function (data) {
+                        toastr.success(data['message']);
+                        $("#login-button").prop('disabled', false);
+                        localStorage.setItem('token', data['token']);
+                        setTimeout(() => {
+                            window.location.replace(window.location.origin + String(window.location.pathname).replace('login.html', '#dashboard'));
+                        }, 100);
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        toastr.error(XMLHttpRequest.responseJSON.message);
+                    },
+                });
+
+            })
+
+            $("#registerForm").on('submit', function (event) {
+                event.preventDefault();
+                toastr.info('Creating account...');
+                $("#register-button").prop('disabled', true);
+
+                var values = {};
+                $.each($('#registerForm').serializeArray(), function (i, field) {
+                    values[field.name] = field.value;
+                });
+
+                $.ajax({
+                    url: "rest/register",
+                    type: "POST",
+                    data: values,
+                    success: function (data) {
+                        toastr.success(data['message']);
+                        $("#register-button").prop('disabled', false);
+                        $("#switch-button-register").click();
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        toastr.error(XMLHttpRequest.responseJSON.message);
+                    },
+                });
+            });
+
+            $("#switch-button-register").on('click', function () {
+                $('#layoutAuthentication_content_register').addClass('d-none');
+                $('#layoutAuthentication_content_activate_2fa').addClass('d-none');
+                $('#layoutAuthentication_content_activate_2fa_qr').addClass('d-none');
+                $('#layoutAuthentication_content_forgot_password').addClass('d-none');
+                $('#layoutAuthentication_content_login').removeClass('d-none');
+            });
+
+            $("#switch-link-login").on('click', function () {
+                $('#layoutAuthentication_content_register').addClass('d-none');
+                $('#layoutAuthentication_content_activate_2fa').addClass('d-none');
+                $('#layoutAuthentication_content_activate_2fa_qr').addClass('d-none');
+                $('#layoutAuthentication_content_forgot_password').addClass('d-none');
+                $('#layoutAuthentication_content_login').removeClass('d-none');
+            });
+
+            $("#switch-forgot-password").on('click', function () {
+                $('#layoutAuthentication_content_register').addClass('d-none');
+                $('#layoutAuthentication_content_activate_2fa').addClass('d-none');
+                $('#layoutAuthentication_content_activate_2fa_qr').addClass('d-none');
+                $('#layoutAuthentication_content_login').addClass('d-none');
+                $('#layoutAuthentication_content_forgot_password').removeClass('d-none');
+            });
+
+            $("#switch-button-login").on('click', function () {
+                $('#layoutAuthentication_content_login').addClass('d-none');
+                $('#layoutAuthentication_content_activate_2fa').addClass('d-none');
+                $('#layoutAuthentication_content_activate_2fa_qr').addClass('d-none');
+                $('#layoutAuthentication_content_forgot_password').addClass('d-none');
+                $('#layoutAuthentication_content_register').removeClass('d-none');
+            });
+
+            $("#switch-link-register").on('click', function () {
+                $('#layoutAuthentication_content_login').addClass('d-none');
+                $('#layoutAuthentication_content_activate_2fa').addClass('d-none');
+                $('#layoutAuthentication_content_activate_2fa_qr').addClass('d-none');
+                $('#layoutAuthentication_content_forgot_password').addClass('d-none');
+                $('#layoutAuthentication_content_register').removeClass('d-none');
+            });
+
+        });
+
+    </script>
+</body>
+
+</html>
