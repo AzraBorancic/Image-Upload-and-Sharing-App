@@ -350,9 +350,14 @@
                     type: "POST",
                     data: values,
                     success: function (data) {
-                        toastr.success(data['message']);
-                        $("#register-button").prop('disabled', false);
-                        $("#switch-button-register").click();
+                        if(data["status"]== "error"){
+                            toastr.error(data["message"]);
+                        }else{
+                            toastr.success(data['message']);
+                             $("#register-button").prop('disabled', false);
+                            $("#switch-button-register").click();
+                        }
+
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
                         toastr.error(XMLHttpRequest.responseJSON.message);

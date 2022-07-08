@@ -164,5 +164,5 @@ Flight::route('POST /register', function () {
   Flight::userService()->register($data);
   // TODO: add in account verification
   // Flight::json(["message" => "Confirmation email has been sent. Please confirm your account"]);
-  Flight::json(["message" => "Account has been created successfully!"]);
+  Flight::json(['status' => 'ok',"message" => "Account has been created successfully!"]);
 });

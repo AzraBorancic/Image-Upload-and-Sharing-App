@@ -17,7 +17,6 @@ class UserService extends BaseService
 
   public function register($user)
   {
-
     try {
       $user = $this->dao->add([
         "username" => $user['username'],

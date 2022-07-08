@@ -1,3 +1,4 @@
+//for image modals in gallery
 window.addEventListener(
   "DOMContentLoaded",
   function () {
@@ -221,6 +222,7 @@ function manageFavorites(id, imageId, removeFromFavorites = false) {
   });
 }
 
+//individual image modal
 function openModal(id, albumImageId = null) {
   let favoriteId = JSON.parse(localStorage.getItem("user"))["favorite_id"];
   if (window.location.hash !== "#album") {
@@ -465,6 +467,7 @@ function revealAlbumSelect() {
 
 }
 
+//povuci slike
 function getImages(myImages = false, favorites = false) {
   $(".gallery-item").addClass("d-none");
   switch (true) {
@@ -660,11 +663,13 @@ function createAlbum() {
   toastr.info('Album creation started...');
   let albumName = "";
   if (window.location.hash === '#albums') {
+    //u #albums
     albumName = $("#album-name-modal").val();
     $("#album-name-modal").prop("disabled", true);
     $("#save-button").prop("disabled", true);
     $("#loader-album-modal").removeClass("d-none");
   } else {
+    //u #dashboard
     albumName = $("#album-name-open-modal").val();
     $("#album-name-open-modal").prop("disabled", true);
     $("#save-album-button").prop("disabled", true);

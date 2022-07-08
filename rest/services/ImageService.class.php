@@ -79,6 +79,23 @@ class ImageService extends BaseService
     public function delete($user, $id)
     {
         $image = $this->dao->get_by_id($id);
+        $credentials = new Aws\Credentials\Credentials($_ENV['AWS_ACCESS_KEY_ID'], $_ENV['AWS_SECRET_ACCESS_KEY']);
+
+        $s3Client = new S3Client([
+            'version' => 'latest',
+            'region'  => $_ENV['AWS_DEFAULT_REGION'],
+            'credentials' => $credentials
+        ]);
+        $bucket = $_ENV['AWS_BUCKET'];
+        $keys = explode('.com/', $image[0]['s3_url']);
+        $keyname = $keys[1];
+
+
+        $result = $s3Client->deleteObject(array(
+            'Bucket' => $bucket,
+            'Key'    => $keyname
+        )); 
+
         parent::delete($user, $id);
     }
 }

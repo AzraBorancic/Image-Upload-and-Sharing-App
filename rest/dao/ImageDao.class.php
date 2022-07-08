@@ -17,7 +17,7 @@ class ImageDao extends BaseDao
     {
         $query = "SELECT i.id, i.s3_url, i.user_id, i.created_at, 
                   COUNT(uli.image_id) as number_of_likes
-                  from images i left join users_liked_images uli ON uli.image_id = i.id group by i.id;";
+                  from images i left join users_liked_images uli ON uli.image_id = i.id group by i.id desc;";
         return $this->query($query, []);
     }
 
